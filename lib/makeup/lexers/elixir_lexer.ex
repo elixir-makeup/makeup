@@ -14,7 +14,8 @@ defmodule Makeup.Lexers.ElixirLexer do
 
   import Makeup.Lexer.Common.ASCII, only: [
     space: 1, spaces1: 1, digits1: 1,
-    hex_digits1: 1, lowercase_letter_: 1, alphanums_: 1]
+    hex_digits1: 1, lowercase_letter_: 1,
+    alphanums_: 1, alphanum_: 1]
   
   # # Actual lexer
 
@@ -571,6 +572,82 @@ defmodule Makeup.Lexers.ElixirLexer do
   ), pipe_result_into: process_delimiter_groups    
 
 
+  defrule block_keyword(
+    seq([
+      alt([
+        lit("else"),
+        lit("catch"),
+        lit("rescue"),
+        lit("after"),
+        lit("end")
+      ]),
+      lookahead_not(alphanum_())
+    ])
+  )
+
+  defrule block_keyword_middle(
+    seq([
+      alt([
+        lit("else"),
+        lit("catch"),
+        lit("rescue"),
+        lit("after")
+      ]),
+      lookahead_not(alphanum_())
+    ])
+  )
+
+  defrule end_keyword(
+    lit("end") |> lookahead_not(alphanum_())
+  )
+
+  defrule do_block(
+    seq([
+      tag(:keyword,
+        token(lit("do") |> lookahead_not(alphanum_()), Tok.name)),
+      tag(:normal,
+        repeat(
+          lookahead_not(block_keyword())
+          |> root_element(), 1)),
+      repeat(
+        seq([
+          tag(:keyword,
+            token(block_keyword_middle(), Tok.name)),
+          tag(:normal,
+            repeat(
+              lookahead_not(block_keyword())
+              |> root_element(), 1))
+        ])),
+      tag(:keyword,
+        token(end_keyword(), Tok.name))
+    ])
+  ), pipe_result_into: process_do_block
+        
+  defp process_do_block(results) do
+    uid = unique_value()
+    results |> List.flatten |> Enum.map(&tag_do_block_element(&1, uid))
+  end
+
+  defp tag_do_block_element({:keyword, keyword}, uid), do: as_group(keyword, uid)
+  defp tag_do_block_element({:normal, toks}, _), do: toks
+
+
+  defrule fn_end(
+    seq([
+      tag(:open,
+        token(lit("fn") |> lookahead_not(alphanum_()), Tok.name)),
+      tag(:middle,
+        repeat(
+          lookahead_not(end_keyword())
+          |> root_element(),
+        1)),
+      tag(:close,
+        token(end_keyword(), Tok.name))
+    ])
+  ), pipe_result_into: process_delimiter_groups
+
+
+
   defrule any_char(
     token(char(), Tok.error)
   )
@@ -602,6 +679,10 @@ defmodule Makeup.Lexers.ElixirLexer do
       attribute(),
       # Keywords syntax sugar (must come before names)
       keyword(),
+      # Do block (must come before names)
+      do_block(),
+      # fn ... end (must also come before names)
+      fn_end(),
       # Name
       name(),
       # Module
@@ -640,15 +721,21 @@ defmodule Makeup.Lexers.ElixirLexer do
   )
 
   @keywords MapSet.new(~W[fn do end after else rescue catch with])
+
   @keyword_operators MapSet.new(~W[not and or when in])
+
   @builtin MapSet.new(~W[
     case cond for if unless try receive raise
     quote unquote unquote_splicing throw super])
+
   @builtin_declaration MapSet.new(~W[
     def defp defmodule defprotocol defmacro defmacrop
     defdelegate defexception defstruct defimpl defcallback])
+
   @builtin_namespace MapSet.new(~W[import require use alias])
+
   @constant MapSet.new(~W[nil true false])
+
   @pseudovar MapSet.new(~W[_ __MODULE__ __DIR__ __ENV__ __CALLER__])
 
   defp postprocess({:name, meta, value}) do
