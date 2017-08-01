@@ -475,20 +475,100 @@ defmodule Makeup.Lexers.ElixirLexer do
       Tok.comment_single)
   )
 
+  # Matching delimiters
+  # - parenthesis - ()
+  # - tuple: {}
+  # - straight brackets - []
+  # - binaries - <<>>
+  # - map - %{}
+  # - struct %Module{}
+  
+  defp process_delimiter_groups([open: open, middle: middle, close: close]) do
+    # Generate unique value
+    uid = unique_value()
+    processed =
+      # Mark the opening tag as belonging to the group `uid`
+      (open |>  List.wrap |> List.flatten |> as_group(uid)) ++
+      # No need to anything to the middle part
+      middle ++
+      # Mark the closing tag as belonging to the group `uid`
+      (close |> List.wrap |> List.flatten |> as_group(uid))
+    processed
+  end
+
   defrule tuple(
     seq([
-      token(lit(?{), Tok.punctuation),
-      repeat(lookahead_not(lit(?})) |> root_element()),
-      token(lit(?}), Tok.punctuation)])
-  )
+      tag(:open,
+        token(lit(?{), Tok.punctuation)
+      ),
+      tag(:middle,
+        repeat(lookahead_not(lit(?})) |> root_element())
+      ),
+      tag(:close,
+        token(lit(?}), Tok.punctuation)
+      )
+    ])
+  ), pipe_result_into: process_delimiter_groups
 
+  
+  defrule struct_(
+    seq([
+      tag(:open,
+        seq([
+          token(char(?%), Tok.punctuation),
+          module_name(),
+          token(char(?{), Tok.punctuation)])),
+      tag(:middle,
+        repeat(lookahead_not(char(?})) |> root_element())),
+      tag(:close,
+        token(char(?}), Tok.punctuation))
+    ])
+  ), pipe_result_into: process_delimiter_groups
+
+  
   defrule map(
     seq([
-      token(lit("%{"), Tok.punctuation),
-      repeat(lookahead_not(lit("}")) |> root_element()),
-      token(lit("}"), Tok.punctuation)
-    ])
-  )
+      tag(:open,
+        token(lit("%{"), Tok.punctuation)),
+      tag(:middle,
+        repeat(lookahead_not(char(?})) |> root_element())),
+      tag(:close,
+        token(char(?}), Tok.punctuation))])
+  ), pipe_result_into: process_delimiter_groups
+
+  
+  defrule parens(
+    seq([
+      tag(:open,
+        token(char(?(), Tok.punctuation)),
+      tag(:middle,
+        repeat(
+          lookahead_not(lit(?))) |> root_element())),
+      tag(:close,
+        token(char(?)), Tok.punctuation))])
+  ), pipe_result_into: process_delimiter_groups
+
+  
+  defrule list(
+    seq([
+      tag(:open,
+        token(lit(?[), Tok.punctuation)),
+      tag(:middle,
+        repeat(lookahead_not(lit(?])) |> root_element())),
+      tag(:close,
+        token(lit(?]), Tok.punctuation))])
+  ), pipe_result_into: process_delimiter_groups
+  
+
+  defrule binary(
+    seq([
+      tag(:open,
+        token(lit("<<"), Tok.punctuation)),
+      tag(:middle,
+        repeat(lookahead_not(lit(">>")) |> root_element())),
+      tag(:close,
+        token(lit(">>"), Tok.punctuation))])
+  ), pipe_result_into: process_delimiter_groups    
 
 
   defrule any_char(
@@ -528,6 +608,13 @@ defmodule Makeup.Lexers.ElixirLexer do
       module_name(),
       # Anonymous function arguments (must come before the operators)
       anon_function_arguments(),
+      # Maps, tuples and structs must be matched before punctuation and operators
+      struct_(),
+      map(),
+      tuple(),
+      parens(),
+      list(),
+      binary(),
       # Operators
       operator(),
       # Punctuation
@@ -548,9 +635,6 @@ defmodule Makeup.Lexers.ElixirLexer do
       # Strings and charlists (must come after the heredocs)
       string(),
       charlist(),
-      # Maps and tuples can't be simple punctuation, because it would mess with interpolation
-      map(),
-      tuple(),
       any_char()
     ])
   )
