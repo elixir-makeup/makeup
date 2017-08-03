@@ -1,19 +1,6 @@
 
 defmodule Makeup.Styles.HTML.FruityStyle do
-  @moduledoc """
-  pygments version of my "fruity" vim theme.
-  
-  &copy; Copyright 2006-2017 by the Pygments team, see AUTHORS.
-  License: BSD, see [here](https://opensource.org/licenses/BSD-3-Clause) for details.
-
-  <table>
-    <thead><tr><th>Warning</th></tr></thead>
-    <tbody><tr><td>
-      This file was automatically generated from the Pygments source.
-      Any edits to this file may be lost if the file is regenerated.
-    </td></tr></tbody>
-  </table>
-  """
+  @moduledoc false
 
   require Makeup.Token.TokenTypes
   alias Makeup.Token.TokenTypes, as: Tok
@@ -39,12 +26,14 @@ defmodule Makeup.Styles.HTML.FruityStyle do
   
   alias Makeup.Styles.HTML.Style
   
-  def style() do
-    Style.make_style(
+  @style_struct Style.make_style(
       short_name: "fruity",
       long_name: "Fruity Style",
       background_color: "#111111",
       highlight_color: "#333333",
       styles: @styles)
+      
+  def style() do
+    @style_struct()
   end
 end

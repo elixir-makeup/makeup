@@ -50,6 +50,7 @@ defmodule Sandbox.Mixfile do
       {:exconstructor, "~> 1.1.0"},
       {:html_entities, "~> 0.3.0"},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false}
+      #{:ex_doc, path: "../ex_doc", only: :dev, runtime: false}
     ]
   end
 end

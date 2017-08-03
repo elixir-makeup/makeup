@@ -1,21 +1,6 @@
 
 defmodule Makeup.Styles.HTML.RainbowDashStyle do
-  @moduledoc """
-  A bright and colorful syntax highlighting `theme`.
-  
-  .. _theme: http://sanssecours.github.io/Rainbow-Dash.tmbundle
-  
-  &copy; Copyright 2006-2017 by the Pygments team, see AUTHORS.
-  License: BSD, see [here](https://opensource.org/licenses/BSD-3-Clause) for details.
-
-  <table>
-    <thead><tr><th>Warning</th></tr></thead>
-    <tbody><tr><td>
-      This file was automatically generated from the Pygments source.
-      Any edits to this file may be lost if the file is regenerated.
-    </td></tr></tbody>
-  </table>
-  """
+  @moduledoc false
 
   require Makeup.Token.TokenTypes
   alias Makeup.Token.TokenTypes, as: Tok
@@ -61,12 +46,14 @@ defmodule Makeup.Styles.HTML.RainbowDashStyle do
   
   alias Makeup.Styles.HTML.Style
   
-  def style() do
-    Style.make_style(
+  @style_struct Style.make_style(
       short_name: "rainbow_dash",
       long_name: "RainbowDash Style",
       background_color: "#ffffff",
       highlight_color: "#ffffcc",
       styles: @styles)
+      
+  def style() do
+    @style_struct()
   end
 end

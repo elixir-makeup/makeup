@@ -1,5 +1,5 @@
 
-defmodule Makeup.Styles.HTML.TangoStyle do
+defmodule Makeup.Styles.HTML.SambaStyle do
   @moduledoc false
 
   require Makeup.Token.TokenTypes
@@ -19,7 +19,7 @@ defmodule Makeup.Styles.HTML.TangoStyle do
     Tok.name_attribute => "#c4a000",
     Tok.name_builtin => "#204a87",
     Tok.name_builtin_pseudo => "#3465a4",
-    Tok.name_class => "#000000",
+    Tok.name_class => "#5c35cc",
     Tok.name_constant => "#000000",
     Tok.name_decorator => "bold #5c35cc",
     Tok.name_entity => "#ce5c00",
@@ -55,12 +55,12 @@ defmodule Makeup.Styles.HTML.TangoStyle do
     Tok.number_oct => "bold #0000cf",
     Tok.operator => "bold #ce5c00",
     Tok.operator_word => "bold #204a87",
-    Tok.punctuation => "bold #000000",
-    Tok.comment => "italic #8f5902",
-    Tok.comment_multiline => "italic #8f5902",
-    Tok.comment_preproc => "italic #8f5902",
-    Tok.comment_single => "italic #8f5902",
-    Tok.comment_special => "italic #8f5902",
+    Tok.punctuation => "#000000",
+    Tok.comment => "#8e908c",
+    Tok.comment_multiline => "#8e908c",
+    Tok.comment_preproc => "#8e908c",
+    Tok.comment_single => "#8e908c",
+    Tok.comment_special => "#8e908c",
     Tok.generic => "#000000",
     Tok.generic_deleted => "#a40000",
     Tok.generic_emph => "italic #000000",
@@ -78,8 +78,8 @@ defmodule Makeup.Styles.HTML.TangoStyle do
   alias Makeup.Styles.HTML.Style
   
   @style_struct Style.make_style(
-      short_name: "tango",
-      long_name: "Tango Style",
+      short_name: "samba",
+      long_name: "Samba Style",
       background_color: "#f8f8f8",
       highlight_color: "#ffffcc",
       styles: @styles)

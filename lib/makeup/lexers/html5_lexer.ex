@@ -1,4 +1,4 @@
-defmodule Makeup.Lexers.HTML5 do
+defmodule Makeup.Lexers.HTML5Lexer do
   @moduledoc """
   Documentation for the HTML5 lexer.
 

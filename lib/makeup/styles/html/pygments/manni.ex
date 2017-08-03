@@ -1,22 +1,6 @@
 
 defmodule Makeup.Styles.HTML.ManniStyle do
-  @moduledoc """
-  A colorful style, inspired by the terminal highlighting style.
-  
-  This is a port of the style used in the `php port`_ of pygments
-  by Manni. The style is called 'default' there.
-  
-  &copy; Copyright 2006-2017 by the Pygments team, see AUTHORS.
-  License: BSD, see [here](https://opensource.org/licenses/BSD-3-Clause) for details.
-
-  <table>
-    <thead><tr><th>Warning</th></tr></thead>
-    <tbody><tr><td>
-      This file was automatically generated from the Pygments source.
-      Any edits to this file may be lost if the file is regenerated.
-    </td></tr></tbody>
-  </table>
-  """
+  @moduledoc false
 
   require Makeup.Token.TokenTypes
   alias Makeup.Token.TokenTypes, as: Tok
@@ -66,12 +50,14 @@ defmodule Makeup.Styles.HTML.ManniStyle do
   
   alias Makeup.Styles.HTML.Style
   
-  def style() do
-    Style.make_style(
+  @style_struct Style.make_style(
       short_name: "manni",
       long_name: "Manni Style",
       background_color: "#f0f3f3",
       highlight_color: "#ffffcc",
       styles: @styles)
+      
+  def style() do
+    @style_struct()
   end
 end

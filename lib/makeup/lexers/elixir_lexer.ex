@@ -476,6 +476,25 @@ defmodule Makeup.Lexers.ElixirLexer do
       Tok.comment_single)
   )
 
+  # iex(1)>
+  # iex>
+  defrule iex_prompt(
+    token(
+      seq([
+        alt([
+          lit("iex"),
+          lit("...")
+        ]),
+        repeat(
+          seq([
+            lit("("),
+            digits1(),
+            lit(")")
+          ]), 0, 1),
+        lit(">")]),
+      Tok.generic_prompt)
+  )
+
   # Matching delimiters
   # - parenthesis - ()
   # - tuple: {}
@@ -662,6 +681,8 @@ defmodule Makeup.Lexers.ElixirLexer do
       whitespace(),
       # Comment
       inline_comment(),
+      # iex prompt
+      iex_prompt(),
       # Chars
       long_hex_char(),
       hex_char(),

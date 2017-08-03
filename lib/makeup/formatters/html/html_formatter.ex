@@ -1,4 +1,4 @@
-defmodule Makeup.Formatters.HTML.SimpleHTMLFormatter do
+defmodule Makeup.Formatters.HTML.HTMLFormatter do
 
   require EEx
 
@@ -15,10 +15,14 @@ defmodule Makeup.Formatters.HTML.SimpleHTMLFormatter do
     render_token(escaped_value, css_class, meta)
   end
 
-  def format(tokens, css_class \\ "highlight") do
-    inner = tokens
+  def format_inner(tokens) do
+    tokens
     |> Enum.map(&format_token/1)
     |> Enum.join("")
+  end
+
+  def format(tokens, css_class \\ "highlight") do
+    inner = format_inner(tokens)
 
     """
     <pre class="#{css_class}"><code>#{inner}</code></pre>
