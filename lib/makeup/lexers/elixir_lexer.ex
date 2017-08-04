@@ -58,13 +58,15 @@ defmodule Makeup.Lexers.ElixirLexer do
 
   defrule interpol(
     seq([
-      token(lit("\#{"), Tok.string_interpol),
-      repeat(
-        lookahead_not(lit("}")) |> root_element()
-      ),
-      token(lit("}"), Tok.string_interpol)
+      tag(:open,
+        token(lit("\#{"), Tok.string_interpol)),
+      tag(:middle,
+        repeat(
+          lookahead_not(lit("}")) |> root_element())),
+      tag(:close,
+        token(lit("}"), Tok.string_interpol))
     ])
-  )
+  ), pipe_result_into: process_delimiter_groups
 
   defrule embed_interpol(
     alt([
@@ -73,7 +75,6 @@ defmodule Makeup.Lexers.ElixirLexer do
     ])
   )
 
-  # Sigils with no interpolation are very simple (once you have the right macro available)
   defrule sigil_no_interpol(
     seq([
       tag(:open,
