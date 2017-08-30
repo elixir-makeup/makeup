@@ -1,4 +1,10 @@
 defmodule Makeup do
+  @moduledoc """
+  Syntax highlighting library for code, inspired by Pygments.
+
+  By default, it doesn't include any lexers.
+  You must import them separately (even the Elixir lexer).
+  """
   alias Makeup.Formatters.HTML.HTMLFormatter
   alias Makeup.Lexers.ElixirLexer
   alias Makeup.Styles.HTML.StyleMap

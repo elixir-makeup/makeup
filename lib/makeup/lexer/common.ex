@@ -127,7 +127,7 @@ defmodule Makeup.Lexer.Common do
       left, right,
       interpol_left, interpol_inner, interpol_right,
       options \\ []) do
-    # *Bewhare those who enter, for here lies dark magic!*
+    # *Beware those who enter, for here lies dark magic!*
     #
     # In an act of extreme cultural insensitivity, the names of the arguments for this macro
     # assume a right-to-left writing system.

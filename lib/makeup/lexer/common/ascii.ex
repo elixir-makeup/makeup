@@ -6,7 +6,6 @@ defmodule Makeup.Lexer.Common.ASCII do
   
   alias Makeup.Lexer.Common.Macros, as: M
   require M
-  
 
   @doc """
   Recognizes an ASCII space (`[?\\s, ?\\t, ?\\n, ?\\r, ?\\f, ?\\v]`).
