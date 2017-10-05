@@ -132,8 +132,6 @@ defmodule Makeup.Styles.HTML do
       literal: nil
     ]
 
-    use ExConstructor
-
     @doc """
     A `TokenStyle` is considered empty if all its fields are `nil`.
 
@@ -194,12 +192,12 @@ defmodule Makeup.Styles.HTML do
     TODO: Add examples
     """
     def from_string(str) do
-      str
-      |> String.split()
-      |> Enum.map(&to_attr/1)
-      |> Enum.filter(fn x -> x end)
-      |> Enum.into(%{})
-      |> TokenStyle.new
+      attrs =
+        str
+        |> String.split()
+        |> Enum.map(&to_attr/1)
+        |> Enum.filter(fn x -> x end)
+      struct(TokenStyle, attrs)
     end
   end
 

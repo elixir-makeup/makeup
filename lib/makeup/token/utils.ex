@@ -1,7 +1,4 @@
 defmodule Makeup.Token.Utils do
-
-  use Const
-
   require Makeup.Token.TokenTypes
   alias Makeup.Token.TokenTypes, as: Tok
 
@@ -97,19 +94,24 @@ defmodule Makeup.Token.Utils do
       {Tok.generic_traceback, "gt"}]}
   ]
 
-  
+
+  @precedence Hierarchy.hierarchy_to_precedence(@hierarchy)
   @token_to_class_map Hierarchy.style_to_class_map(@hierarchy)
+  @standard_token_types Map.keys(@token_to_class_map)
 
-  const precedence, do:
-    Hierarchy.hierarchy_to_precedence(@hierarchy)
-  const token_to_class_map, do:
-    @token_to_class_map
-  const standard_token_types, do:
-    Map.keys(@token_to_class_map)
-
-
-  def css_class_for_token_type(token_type) do
-   Map.get(@token_to_class_map, token_type, nil)
+  def precedence do
+    @precedence
   end
 
+  def token_to_class_map do
+    @token_to_class_map
+  end
+
+  def standard_token_types do
+    @standard_token_types
+  end
+
+  def css_class_for_token_type(token_type) do
+    Map.get(@token_to_class_map, token_type, nil)
+  end
 end

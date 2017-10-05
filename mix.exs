@@ -46,9 +46,6 @@ defmodule Makeup.Mixfile do
   defp deps do
     [
       {:ex_spirit, "~> 0.3.0"},
-      {:ex_const, "~> 0.1.0"},
-      {:exconstructor, "~> 1.1.0"},
-      {:html_entities, "~> 0.3.0"},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false}
       #{:ex_doc, path: "../ex_doc", only: :dev, runtime: false}
     ]
