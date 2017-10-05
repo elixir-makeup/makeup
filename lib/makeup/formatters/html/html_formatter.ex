@@ -10,9 +10,16 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   """, [:escaped_value, :css_class, :meta])
 
   def format_token({tag, meta, value}) do
-    escaped_value = HtmlEntities.encode(value)
+    escaped_value = escape(value)
     css_class = Makeup.Token.Utils.css_class_for_token_type(tag)
     render_token(escaped_value, css_class, meta)
+  end
+
+  defp escape(string) do
+    escape_map = [{"&", "&amp;"}, {"<", "&lt;"}, {">", "&gt;"}, {~S("), "&quot;"}]
+    Enum.reduce escape_map, string, fn {pattern, escape}, acc ->
+      String.replace(acc, pattern, escape)
+    end
   end
 
   def format_inner(tokens) do
