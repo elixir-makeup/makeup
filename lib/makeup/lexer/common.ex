@@ -12,7 +12,7 @@ defmodule Makeup.Lexer.Common do
           unquote(word))
       end
     end)
-    
+
     quote do
       unquote(context)
       |> M.lexeme(
@@ -36,7 +36,7 @@ defmodule Makeup.Lexer.Common do
         tag(:middle,
           M.repeat(
             M.lookahead_not(M.lit(unquote(right)))
-            |> M.alt([              
+            |> M.alt([
                 # Try to parse an ininterrupted sequence of characters
                 tag(:characters,
                   lexeme(
@@ -163,11 +163,11 @@ defmodule Makeup.Lexer.Common do
     # `ExSpirit` already comes with a ready-to-use tool precisely to turn complex matches
     # into flat binaries: the `lexeme` parser.
     # This is the tool we will use to gather the characters into a binary.
-    
-    # Extract the optional arguments from the `options` 
+
+    # Extract the optional arguments from the `options`
     escape = Keyword.get(options, :escape, "\\")
     interpol_repeat = Keyword.get(options, :repeat, nil)
-    
+
     quote do
       M.seq(unquote(context_ast), [
         # Match the left delimiter of the string object, and return the matched text
@@ -192,14 +192,14 @@ defmodule Makeup.Lexer.Common do
               # We couldn't parse an interpolation.
               # We have ahead of us a list of normal characters (possibly escaped).
               # We will collect the whole list into a flat binary.
-              # 
+              #
               # Also, we the binary to distinguish it from interpolations.
               # Things get more complex here, because we need to handle more cases.
               M.tag(:normal,
                 # Use the lexeme parser to turn the result into a flat binary, as discussed above.
                 M.lexeme(
                   # We'll try to match a sequence of either single characters
-                  # or the escape sequence followed by a normal character. 
+                  # or the escape sequence followed by a normal character.
                   repeat(
                     # Make sure we didn't reach the end of the string
                     M.lookahead_not(M.lit(unquote(right)))
@@ -309,7 +309,7 @@ defmodule Makeup.Lexer.Common do
   end
 
 
-  def unique_value, do: :erlang.unique_integer([:positive, :monotonic])
+  def unique_value, do: :erlang.unique_integer([])
 
   def with_meta(results, key, value) when is_list(results) do
     for {tag, meta, val} <- results, do: {tag, Map.put(meta, key, value), val}
