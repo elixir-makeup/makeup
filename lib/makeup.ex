@@ -25,13 +25,18 @@ defmodule Makeup do
       name -> Pickers.pick_lexer!(name)
     end
 
+    lexer_options = case options[:lexer_options] do
+      nil -> %{}
+      opts -> opts
+    end
+
     formatter = case options[:formatter] do
       nil -> HTMLFormatter
       module when is_atom(module) -> module
       name -> Pickers.pick_lexer!(name)
     end
 
-    tokens = apply(lexer, :lex, [source])
+    tokens = apply(lexer, :lex, [source, lexer_options])
     apply(formatter, :format, [tokens])
   end
 
@@ -42,7 +47,12 @@ defmodule Makeup do
       name -> Pickers.pick_lexer!(name)
     end
 
-    tokens = apply(lexer, :lex, [source])
+    lexer_options = case options[:lexer_options] do
+      nil -> %{}
+      opts -> opts
+    end
+
+    tokens = apply(lexer, :lex, [source, lexer_options])
     apply(HTMLFormatter, :format_inner, [tokens])
   end
 
@@ -52,7 +62,7 @@ defmodule Makeup do
   The `css_class` arguments is the top level class for highlighted code.
   For example, if the `css_class` is `"highlight"` (the default), the stylesheet
   has the form:
-  
+
   ```css
   .highlight .someclass {...}
   .highlight .anotherclass {...}
