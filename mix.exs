@@ -45,9 +45,8 @@ defmodule Makeup.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_spirit, "~> 0.3.0"},
+      {:ex_spirit, "~> 0.3.4"},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false}
-      #{:ex_doc, path: "../ex_doc", only: :dev, runtime: false}
     ]
   end
 end
