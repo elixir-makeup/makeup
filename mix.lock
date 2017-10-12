@@ -2,7 +2,7 @@
   "earmark": {:hex, :earmark, "1.2.3", "206eb2e2ac1a794aa5256f3982de7a76bf4579ff91cb28d0e17ea2c9491e46a4", [:mix], []},
   "ex_const": {:hex, :ex_const, "0.1.0", "7b04d0b65f00cfb8afc0b778bd58dec4804612a54f57122524ee097e9f2c5443", [:mix], []},
   "ex_doc": {:hex, :ex_doc, "0.16.2", "3b3e210ebcd85a7c76b4e73f85c5640c011d2a0b2f06dcdf5acdb2ae904e5084", [:mix], [{:earmark, "~> 1.1", [hex: :earmark, optional: false]}]},
-  "ex_spirit": {:hex, :ex_spirit, "0.3.3", "89bd061c68a63b8a4321d768d87e918a7ba60f5a044e5961b14544d1f062901d", [:mix], []},
+  "ex_spirit": {:hex, :ex_spirit, "0.3.4", "cf21c0fa0349445da40091df1fb8141d0e802f83b83659132713012bbe7fb398", [:mix], []},
   "exconstructor": {:hex, :exconstructor, "1.1.0", "272623a7b203cb2901c20cbb92c5c3ab103cc0087ff7c881979e046043346752", [:mix], []},
   "execjs": {:git, "https://github.com/devinus/execjs.git", "a1c0af4c3b0afc9d6f176bf82f9c5b9fae3f2a45", []},
   "html_entities": {:hex, :html_entities, "0.3.0", "2f278ffc69c3f0cbd5996628fef37cf922fa715f3e04b9f38924c8adced3f25a", [:mix], []},
