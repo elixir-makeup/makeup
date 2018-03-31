@@ -61,25 +61,29 @@ defmodule Makeup.Lexer.Combinators do
     {[result], context}
   end
 
+  defp reverse_sort(items) do
+    Enum.sort(items, fn a, b -> {byte_size(a), a} > {byte_size(b), b} end)
+  end
+
   @doc """
   Matches one of the literal strings in the list.
   """
   def word_from_list(words) do
-    choice(for word <- words, do: string(word))
+    choice(for word <- reverse_sort(words), do: string(word))
   end
 
   @doc """
   Matches one of the literal strings in the list and wraps it in a token of the given type.
   """
   def word_from_list(words, ttype) do
-    choice(for word <- words, do: string(word)) |> token(ttype)
+    choice(for word <- reverse_sort(words), do: string(word)) |> token(ttype)
   end
 
   @doc """
   Matches one of the literal strings in the list and wraps it in a token of the given `type`, with the given `attrs`.
   """
   def word_from_list(words, ttype, attrs) do
-    choice(for word <- words, do: string(word)) |> token(ttype, attrs)
+    choice(for word <- reverse_sort(words), do: string(word)) |> token(ttype, attrs)
   end
 
   @doc """
