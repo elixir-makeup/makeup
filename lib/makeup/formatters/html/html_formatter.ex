@@ -17,9 +17,6 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
       classes,
       ~S("),
       if group_id do [~S( data-group-id="), group_id, ~S(")] else [] end,
-      # if selectable == false do
-      #     ~S( style="-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;")
-      #   else [] end,
       ">",
       escaped_value,
       ~S(</span>)
