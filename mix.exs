@@ -46,9 +46,7 @@ defmodule Makeup.Mixfile do
   defp deps do
     [
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
-      {:nimble_parsec, "~> 0.2.2"},
-      # Tests
-      {:stream_data, "~> 0.3.0", only: :test}
+      {:nimble_parsec, "~> 0.2.2"}
     ]
   end
 end
