@@ -45,10 +45,11 @@ defmodule Makeup.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_spirit, "~> 0.3.4"},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+      {:nimble_parsec, "~> 0.2.2"},
       # Tests
       {:stream_data, "~> 0.3.0", only: :test}
     ]
   end
 end
+

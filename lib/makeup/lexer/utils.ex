@@ -1,4 +1,4 @@
-defmodule Makeup.Lexer do
+defmodule Makeup.Lexer.Utils do
 
   def merge([{tag, meta, value1}, {tag, meta, value2} | rest]),
     do: merge [{tag, meta, value1 <> value2} | rest]

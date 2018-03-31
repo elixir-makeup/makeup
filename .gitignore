@@ -24,3 +24,6 @@ erl_crash.dump
 
 # VSCode project folder
 .vscode/**
+
+# Elixir liveserver
+.elixir_ls/**

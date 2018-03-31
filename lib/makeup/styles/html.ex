@@ -46,6 +46,14 @@ defmodule Makeup.Styles.HTML do
     <%= if token_text.border do %>border: <%= token_text.border %>; <% end %>\
     <%= if token_text.text_decoration do %>text-decoration: <%= token_text.text_decoration %>; <% end %>\
     <%= if background_color do %>background-color: <%= background_color %><% end %>}\
+    .<%= highlight_class %> .unselectable {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
     <%= for {css_class, token_style, token_type} <- styles do %>
     .<%= highlight_class %> .<%= css_class %> {\
     <%= if token_style.color do %>color: <%= token_style.color %>; <% end %>\
@@ -54,7 +62,7 @@ defmodule Makeup.Styles.HTML do
     <%= if token_style.border do %>border: <%= token_style.border %>; <% end %>\
     <%= if token_style.text_decoration do %>text-decoration: <%= token_style.text_decoration %>; <% end %>\
     <%= if token_style.background_color do %>background-color: <%= token_style.background_color %>; <% end %>\
-    } /* Tok.<%= Atom.to_string(token_type) %> */\
+    } /* :<%= Atom.to_string(token_type) %> */\
     <% end %>
     """, [:highlight_class,
           :highlight_color,
@@ -67,7 +75,7 @@ defmodule Makeup.Styles.HTML do
     """
     def stylesheet(style, css_class \\ "highlight") do
       token_styles = style.styles
-      |> Map.delete(:text) 
+      |> Map.delete(:text)
       |> Enum.into([])
       |> Enum.map(fn {token_type, token_style} ->
             css_class = Makeup.Token.Utils.css_class_for_token_type(token_type)
@@ -84,10 +92,10 @@ defmodule Makeup.Styles.HTML do
                  token_text,
                  token_styles)
     end
-    
+
     @doc """
     Creates a new style.
-    
+
     Takes care of unspecified token types and inheritance.
     Writes and caches a CSS stylesheet for the style.
     """
@@ -97,7 +105,7 @@ defmodule Makeup.Styles.HTML do
       background_color = Keyword.fetch!(options, :background_color)
       highlight_color = Keyword.fetch!(options, :highlight_color)
       incomplete_style_map = Keyword.fetch!(options, :styles)
-      
+
       complete_style_map = Utils.standard_token_types()
       |> Enum.map(fn k -> {k, ""} end)
       |> Enum.into(%{})
@@ -121,7 +129,7 @@ defmodule Makeup.Styles.HTML do
     @moduledoc """
     A CSS style for a single token.
     """
-    
+
     defstruct [
       font_style: nil,
       font_weight: nil,

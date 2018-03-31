@@ -2,42 +2,39 @@
 defmodule Makeup.Styles.HTML.BlackWhiteStyle do
   @moduledoc false
 
-  require Makeup.Token.TokenTypes
-  alias Makeup.Token.TokenTypes, as: Tok
-
   @styles %{
-    Tok.error => "border:#FF0000",
-    Tok.keyword => "bold",
-    Tok.keyword_pseudo => "nobold",
-    Tok.keyword_type => "nobold",
-    Tok.name_class => "bold",
-    Tok.name_entity => "bold",
-    Tok.name_exception => "bold",
-    Tok.name_namespace => "bold",
-    Tok.name_tag => "bold",
-    Tok.string => "italic",
-    Tok.string_escape => "bold",
-    Tok.string_interpol => "bold",
-    Tok.operator_word => "bold",
-    Tok.comment => "italic",
-    Tok.comment_preproc => "noitalic",
-    Tok.generic_emph => "italic",
-    Tok.generic_heading => "bold",
-    Tok.generic_prompt => "bold",
-    Tok.generic_strong => "bold",
-    Tok.generic_subheading => "bold",
-    
+    :error => "border:#FF0000",
+    :keyword => "bold",
+    :keyword_pseudo => "nobold",
+    :keyword_type => "nobold",
+    :name_class => "bold",
+    :name_entity => "bold",
+    :name_exception => "bold",
+    :name_namespace => "bold",
+    :name_tag => "bold",
+    :string => "italic",
+    :string_escape => "bold",
+    :string_interpol => "bold",
+    :operator_word => "bold",
+    :comment => "italic",
+    :comment_preproc => "noitalic",
+    :generic_emph => "italic",
+    :generic_heading => "bold",
+    :generic_prompt => "bold",
+    :generic_strong => "bold",
+    :generic_subheading => "bold",
+
   }
-  
+
   alias Makeup.Styles.HTML.Style
-  
+
   @style_struct Style.make_style(
       short_name: "bw",
       long_name: "BlackWhite Style",
       background_color: "#ffffff",
       highlight_color: "#ffffcc",
       styles: @styles)
-      
+
   def style() do
     @style_struct()
   end

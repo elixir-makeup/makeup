@@ -1,6 +1,6 @@
 defmodule Makeup.Token.Utils.Hierarchy do
+  @moduledoc false
 
-  @doc false
   def hierarchy_to_precedence(hierarchy) do
     hierarchy
     |> Enum.map(&dependencies/1)
@@ -23,7 +23,7 @@ defmodule Makeup.Token.Utils.Hierarchy do
     children_dependencies = children
       |> Enum.map(&dependencies/1)
       |> List.flatten
-    
+
     [node_dependencies | children_dependencies]
   end
   defp dependencies(_terminal), do: []

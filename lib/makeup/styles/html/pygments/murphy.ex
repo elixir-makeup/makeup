@@ -2,69 +2,66 @@
 defmodule Makeup.Styles.HTML.MurphyStyle do
   @moduledoc false
 
-  require Makeup.Token.TokenTypes
-  alias Makeup.Token.TokenTypes, as: Tok
-
   @styles %{
-    Tok.error => "#F00 bg:#FAA",
-    Tok.keyword => "bold #289",
-    Tok.keyword_pseudo => "#08f",
-    Tok.keyword_type => "#66f",
-    Tok.name_attribute => "#007",
-    Tok.name_builtin => "#072",
-    Tok.name_class => "bold #e9e",
-    Tok.name_constant => "bold #5ed",
-    Tok.name_decorator => "bold #555",
-    Tok.name_entity => "#800",
-    Tok.name_exception => "bold #F00",
-    Tok.name_function => "bold #5ed",
-    Tok.name_label => "bold #970",
-    Tok.name_namespace => "bold #0e84b5",
-    Tok.name_tag => "#070",
-    Tok.name_variable => "#036",
-    Tok.name_variable_class => "#ccf",
-    Tok.name_variable_global => "#f84",
-    Tok.name_variable_instance => "#aaf",
-    Tok.string => "bg:#e0e0ff",
-    Tok.string_char => "#88F bg:",
-    Tok.string_doc => "#D42 bg:",
-    Tok.string_escape => "bold #666",
-    Tok.string_interpol => "bg:#eee",
-    Tok.string_other => "#f88",
-    Tok.string_regex => "bg:#e0e0ff #000",
-    Tok.string_symbol => "#fc8 bg:",
-    Tok.number => "bold #60E",
-    Tok.number_float => "bold #60E",
-    Tok.number_hex => "bold #058",
-    Tok.number_integer => "bold #66f",
-    Tok.number_oct => "bold #40E",
-    Tok.operator => "#333",
-    Tok.operator_word => "bold #000",
-    Tok.comment => "#666 italic",
-    Tok.comment_preproc => "#579 noitalic",
-    Tok.comment_special => "#c00 bold",
-    Tok.generic_deleted => "#A00000",
-    Tok.generic_emph => "italic",
-    Tok.generic_error => "#FF0000",
-    Tok.generic_heading => "bold #000080",
-    Tok.generic_inserted => "#00A000",
-    Tok.generic_output => "#888",
-    Tok.generic_prompt => "bold #c65d09",
-    Tok.generic_strong => "bold",
-    Tok.generic_subheading => "bold #800080",
-    Tok.generic_traceback => "#04D"
-    
+    :error => "#F00 bg:#FAA",
+    :keyword => "bold #289",
+    :keyword_pseudo => "#08f",
+    :keyword_type => "#66f",
+    :name_attribute => "#007",
+    :name_builtin => "#072",
+    :name_class => "bold #e9e",
+    :name_constant => "bold #5ed",
+    :name_decorator => "bold #555",
+    :name_entity => "#800",
+    :name_exception => "bold #F00",
+    :name_function => "bold #5ed",
+    :name_label => "bold #970",
+    :name_namespace => "bold #0e84b5",
+    :name_tag => "#070",
+    :name_variable => "#036",
+    :name_variable_class => "#ccf",
+    :name_variable_global => "#f84",
+    :name_variable_instance => "#aaf",
+    :string => "bg:#e0e0ff",
+    :string_char => "#88F bg:",
+    :string_doc => "#D42 bg:",
+    :string_escape => "bold #666",
+    :string_interpol => "bg:#eee",
+    :string_other => "#f88",
+    :string_regex => "bg:#e0e0ff #000",
+    :string_symbol => "#fc8 bg:",
+    :number => "bold #60E",
+    :number_float => "bold #60E",
+    :number_hex => "bold #058",
+    :number_integer => "bold #66f",
+    :number_oct => "bold #40E",
+    :operator => "#333",
+    :operator_word => "bold #000",
+    :comment => "#666 italic",
+    :comment_preproc => "#579 noitalic",
+    :comment_special => "#c00 bold",
+    :generic_deleted => "#A00000",
+    :generic_emph => "italic",
+    :generic_error => "#FF0000",
+    :generic_heading => "bold #000080",
+    :generic_inserted => "#00A000",
+    :generic_output => "#888",
+    :generic_prompt => "bold #c65d09",
+    :generic_strong => "bold",
+    :generic_subheading => "bold #800080",
+    :generic_traceback => "#04D"
+
   }
-  
+
   alias Makeup.Styles.HTML.Style
-  
+
   @style_struct Style.make_style(
       short_name: "murphy",
       long_name: "Murphy Style",
       background_color: "#ffffff",
       highlight_color: "#ffffcc",
       styles: @styles)
-      
+
   def style() do
     @style_struct()
   end

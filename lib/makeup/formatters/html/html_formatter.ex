@@ -1,13 +1,30 @@
 defmodule Makeup.Formatters.HTML.HTMLFormatter do
 
-  require EEx
+  @group_highlight_js "lib/makeup/formatters/html/scripts/group_highlighter_javascript.js" |> File.read!
 
-  EEx.function_from_string(:defp, :render_token, """
-  <span\
-  <%= if css_class do %> class="<%= css_class %>"<% end %>\
-  <%= if meta[:group_id] do %> data-group-id="<%= meta[:group_id] %>"<% end %>\
-  ><%= escaped_value %></span>\
-  """, [:escaped_value, :css_class, :meta])
+  defp render_token(escaped_value, css_class, meta) do
+    group_id = meta[:group_id]
+    selectable = Map.get(meta, :selectable, [])
+
+    classes = [
+      css_class || [],
+      if selectable == false do " unselectable" else [] end
+    ]
+
+    [
+      ~S(<span),
+      ~S( class="),
+      classes,
+      ~S("),
+      if group_id do [~S( data-group-id="), group_id, ~S(")] else [] end,
+      # if selectable == false do
+      #     ~S( style="-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;")
+      #   else [] end,
+      ">",
+      escaped_value,
+      ~S(</span>)
+    ]
+  end
 
   def format_token({tag, meta, value}) do
     escaped_value = escape(value)
@@ -15,25 +32,71 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
     render_token(escaped_value, css_class, meta)
   end
 
-  defp escape(string) do
-    escape_map = [{"&", "&amp;"}, {"<", "&lt;"}, {">", "&gt;"}, {~S("), "&quot;"}]
-    Enum.reduce escape_map, string, fn {pattern, escape}, acc ->
-      String.replace(acc, pattern, escape)
-    end
+  defp escape_for(?&), do: "&amp;"
+
+  defp escape_for(?<), do: "&lt;"
+
+  defp escape_for(?>), do: "&gt;"
+
+  defp escape_for(?"), do: "&quot;"
+
+  defp escape_for(?'), do: "&#39;"
+
+  defp escape_for(c) when is_integer(c) and c <= 127, do: c
+
+  defp escape_for(c) when is_integer(c) and c > 128, do: << c :: utf8 >>
+
+  defp escape_for(string) when is_binary(string) do
+    string
+    |> to_charlist()
+    |> Enum.map(&escape_for/1)
   end
 
-  def format_inner(tokens) do
+  defp escape(iodata) when is_list(iodata) do
+    iodata
+    |> :lists.flatten()
+    |> Enum.map(&escape_for/1)
+  end
+
+  defp escape(other) when is_binary(other) do
+    escape_for(other)
+  end
+
+  defp escape(c) when is_integer(c) do
+    #
+    [escape_for(c)]
+  end
+
+  defp escape(other) do
+    raise "Found `#{inspect(other)}` inside what should be an iolist"
+  end
+
+  def format_inner_as_iolist(tokens) do
+    Enum.map(tokens, &format_token/1)
+  end
+
+  def format_inner_as_binary(tokens) do
     tokens
-    |> Enum.map(&format_token/1)
-    |> Enum.join("")
+    |> format_inner_as_iolist
+    |> IO.iodata_to_binary
   end
 
-  def format(tokens, css_class \\ "highlight") do
-    inner = format_inner(tokens)
+  def format_as_iolist(tokens, css_class \\ "highlight") do
+    inner = format_inner_as_iolist(tokens)
 
-    """
-    <pre class="#{css_class}"><code>#{inner}</code></pre>
-    """
+    [
+      ~S(<pre class="),
+      css_class,
+      ~S("><code>),
+      inner,
+      ~S(</code></pre>)
+    ]
+  end
+
+  def format_as_binary(tokens, css_class \\ "highlight") do
+    tokens
+    |> format_as_iolist(css_class)
+    |> IO.iodata_to_binary
   end
 
   def stylesheet(style, css_class \\ "highlight") do
@@ -41,34 +104,6 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   end
 
   def group_highlighter_javascript() do
-    """
-    function makeupProcessMatchingGroups() {
-      var HIGHLIGHT_CLASS = "hll";
-      function onMouseEnter(evt) {
-        var groupId = evt.target.getAttribute("data-group-id");
-        siblings = document.querySelectorAll("[data-group-id='" + groupId + "']");
-        for (i = 0; i < siblings.length; ++i) {
-          siblings[i].classList.add(HIGHLIGHT_CLASS);
-        }
-      }
-
-      function onMouseLeave(evt) {
-        var groupId = evt.target.getAttribute("data-group-id");
-        siblings = document.querySelectorAll("[data-group-id='" + groupId + "']");
-        for (i = 0; i < siblings.length; ++i) {
-          siblings[i].classList.remove(HIGHLIGHT_CLASS);
-        }
-      }
-
-      var delims = document.querySelectorAll("[data-group-id]");
-      for(i=0; i < delims.length; i++) {
-        var elem = delims[i];
-        elem.addEventListener("mouseenter", onMouseEnter);
-        elem.addEventListener("mouseleave", onMouseLeave);
-      }
-    }
-
-    makeupProcessMatchingGroups();
-    """
+    @group_highlight_js
   end
 end

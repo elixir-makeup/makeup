@@ -1,97 +1,95 @@
 defmodule Makeup.Token.Utils do
-  require Makeup.Token.TokenTypes
-  alias Makeup.Token.TokenTypes, as: Tok
-
+  @moduledoc false
   alias Makeup.Token.Utils.Hierarchy
 
   @hierarchy [
-    {Tok.text, nil},
-    {Tok.whitespace, "w"},
-    {Tok.escape, "esc"},
-    {Tok.error, "err"},
-    {Tok.other, "x"},
+    {:text, nil},
+    {:whitespace, "w"},
+    {:escape, "esc"},
+    {:error, "err"},
+    {:other, "x"},
 
-    {Tok.comment, "c", [
-      {Tok.comment_hashbang, "ch"},
-      {Tok.comment_multiline, "cm"},
-      {Tok.comment_preproc, "cp", [
-        {Tok.comment_preproc_file, "cpf"}]},
-      {Tok.comment_single, "c1"},
-      {Tok.comment_special, "cs"}]},
+    {:comment, "c", [
+      {:comment_hashbang, "ch"},
+      {:comment_multiline, "cm"},
+      {:comment_preproc, "cp", [
+        {:comment_preproc_file, "cpf"}]},
+      {:comment_single, "c1"},
+      {:comment_special, "cs"}]},
 
-    {Tok.keyword, "k", [
-      {Tok.keyword_constant, "kc"},
-      {Tok.keyword_declaration, "kd"},
-      {Tok.keyword_namespace, "kn"},
-      {Tok.keyword_pseudo, "kp"},
-      {Tok.keyword_reserved, "kr"},
-      {Tok.keyword_type, "kt"}]},
+    {:keyword, "k", [
+      {:keyword_constant, "kc"},
+      {:keyword_declaration, "kd"},
+      {:keyword_namespace, "kn"},
+      {:keyword_pseudo, "kp"},
+      {:keyword_reserved, "kr"},
+      {:keyword_type, "kt"}]},
 
-    {Tok.literal, "l", [
-      {Tok.literal_date, "ld"}]},
+    {:literal, "l", [
+      {:literal_date, "ld"}]},
 
-    {Tok.name, "n", [
-      {Tok.name_attribute, "na"},
-      {Tok.name_builtin, "nb", [
-        {Tok.name_builtin_pseudo, "bp"}]},
-      {Tok.name_class, "nc"},
-      {Tok.name_constant, "no"},
-      {Tok.name_decorator, "nd"},
-      {Tok.name_entity, "ni"},
-      {Tok.name_exception, "ne"},
-      {Tok.name_function, "nf", [
-        {Tok.name_function_magic, "fm"}]},
-      {Tok.name_property, "py"},
-      {Tok.name_label, "nl"},
-      {Tok.name_namespace, "nn"},
-      {Tok.name_other, "nx"},
-      {Tok.name_tag, "nt"},
-      {Tok.name_variable, "nv", [
-        {Tok.name_variable_class, "vc"},
-        {Tok.name_variable_global, "vg"},
-        {Tok.name_variable_instance, "vi"},
-        {Tok.name_variable_magic, "vm"}]}]},
+    {:name, "n", [
+      {:name_attribute, "na"},
+      {:name_builtin, "nb", [
+        {:name_builtin_pseudo, "bp"}]},
+      {:name_class, "nc"},
+      {:name_constant, "no"},
+      {:name_decorator, "nd"},
+      {:name_entity, "ni"},
+      {:name_exception, "ne"},
+      {:name_function, "nf", [
+        {:name_function_magic, "fm"}]},
+      {:name_property, "py"},
+      {:name_label, "nl"},
+      {:name_namespace, "nn"},
+      {:name_other, "nx"},
+      {:name_tag, "nt"},
+      {:name_variable, "nv", [
+        {:name_variable_class, "vc"},
+        {:name_variable_global, "vg"},
+        {:name_variable_instance, "vi"},
+        {:name_variable_magic, "vm"}]}]},
 
-    {Tok.number, "m", [
-      {Tok.number_bin, "mb"},
-      {Tok.number_float, "mf"},
-      {Tok.number_hex, "mh"},
-      {Tok.number_integer, "mi", [
-        {Tok.number_integer_long, "il"}]},
-      {Tok.number_oct, "mo"}]},
+    {:number, "m", [
+      {:number_bin, "mb"},
+      {:number_float, "mf"},
+      {:number_hex, "mh"},
+      {:number_integer, "mi", [
+        {:number_integer_long, "il"}]},
+      {:number_oct, "mo"}]},
 
-    {Tok.string, "s", [
-      {Tok.string_affix, "sa"},
-      {Tok.string_backtick, "sb"},
-      {Tok.string_char, "sc"},
-      {Tok.string_delimiter, "dl"},
-      {Tok.string_doc, "sd"},
-      {Tok.string_double, "s2"},
-      {Tok.string_escape, "se"},
-      {Tok.string_heredoc, "sh"},
-      {Tok.string_interpol, "si"},
-      {Tok.string_other, "sx"},
-      {Tok.string_regex, "sr"},
-      {Tok.string_sigil, "sx"},
-      {Tok.string_single, "s1"},
-      {Tok.string_symbol, "ss"}]},
+    {:string, "s", [
+      {:string_affix, "sa"},
+      {:string_backtick, "sb"},
+      {:string_char, "sc"},
+      {:string_delimiter, "dl"},
+      {:string_doc, "sd"},
+      {:string_double, "s2"},
+      {:string_escape, "se"},
+      {:string_heredoc, "sh"},
+      {:string_interpol, "si"},
+      {:string_other, "sx"},
+      {:string_regex, "sr"},
+      {:string_sigil, "sx"},
+      {:string_single, "s1"},
+      {:string_symbol, "ss"}]},
 
-    {Tok.operator, "o", [
-      {Tok.operator_word, "ow"}]},
+    {:operator, "o", [
+      {:operator_word, "ow"}]},
 
-    {Tok.punctuation, "p"},
+    {:punctuation, "p"},
 
-    {Tok.generic, "g", [
-      {Tok.generic_deleted, "gd"},
-      {Tok.generic_emph, "ge"},
-      {Tok.generic_error, "gr"},
-      {Tok.generic_heading, "gh"},
-      {Tok.generic_inserted, "gi"},
-      {Tok.generic_prompt, "gp"},
-      {Tok.generic_output, "go"},
-      {Tok.generic_strong, "gs"},
-      {Tok.generic_subheading, "gu"},
-      {Tok.generic_traceback, "gt"}]}
+    {:generic, "g", [
+      {:generic_deleted, "gd"},
+      {:generic_emph, "ge"},
+      {:generic_error, "gr"},
+      {:generic_heading, "gh"},
+      {:generic_inserted, "gi"},
+      {:generic_prompt, "gp"},
+      {:generic_output, "go"},
+      {:generic_strong, "gs"},
+      {:generic_subheading, "gu"},
+      {:generic_traceback, "gt"}]}
   ]
 
 

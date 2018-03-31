@@ -37,7 +37,7 @@ defmodule Makeup do
     end
 
     tokens = apply(lexer, :lex, [source, lexer_options])
-    apply(formatter, :format, [tokens])
+    apply(formatter, :format_as_binary, [tokens])
   end
 
   def highlight_inner_html(source, options \\ []) do
@@ -53,7 +53,7 @@ defmodule Makeup do
     end
 
     tokens = apply(lexer, :lex, [source, lexer_options])
-    apply(HTMLFormatter, :format_inner, [tokens])
+    apply(HTMLFormatter, :format_inner_as_binary, [tokens])
   end
 
   @doc """
