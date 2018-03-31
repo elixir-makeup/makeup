@@ -5,7 +5,7 @@
 Makeup is a "generic syntax highlighter suitable for use in code hosting, forums, wikis or other applications that need to prettify source code" . This tagline was shamelessly stolen from the [Pygments website](http://pygments.org/).
 
 Pygments the major inspiration for this package, and the structure is basically the same.
-It has **lexers**, *formatters** and **styles**.
+It has **lexers**, **formatters** and **styles**.
 
 * **Lexers** turn the source code into a list of tokens
 * **Formatters** turn the list of tokens into something else (HTML, TeX, images, etc.).
@@ -75,15 +75,15 @@ Makeup.stylesheet(style) # by default, the StyleMap.default style is used.
 
 ## Advantages over Pygments
 
-One of the greatest advantages is that it runs on the BEAM, so it can be used with elixir projects without external dependencies.
+One of the greatest advantages is that it runs on the BEAM, so it can be used with Elixir projects without external dependencies.
 
 Another advantage is that the way lexers are written, we can be a lot smarter than Pygments in processing the output.
 We can look for matching HTML tags, and render the contents according to the tag.
 For example, in the current HTML5 lexer, the contents of a `<em></em>` are rendered in *italic*,
 and the contents of the `<strong></strong>` tag are rendered in **bold**.
 
-For the developper, lexers are also easier to write than the Pygments lexers, because we use a PEG parser.
-Most Pygments lexes use something like a state table that works based on regex matches,
+For the developer, lexers are also easier to write than the Pygments lexers, because we use a PEG parser.
+Most Pygments lexers use something like a state table that works based on regex matches,
 and uses the results of those matches to switch to another state. 
 Using a PEG parser we can define the grammar in a more natural way.
 
