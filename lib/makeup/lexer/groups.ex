@@ -198,6 +198,13 @@ defmodule Makeup.Lexer.Groups do
     open_branches_ast ++ middle_branches_ast ++ close_branches_ast
   end
 
+  @doc """
+  Defines a function with the given `name` that takes a list of tokens and divides
+  matching delimiters into groups.
+
+  Takes as arguments a `name` for the function (must be an atom) and a list
+  containing the patterns describing the matching groups.
+  """
   defmacro defgroupmatcher(name, stacks, opts \\ []) do
     name_helper =
       name
@@ -227,6 +234,10 @@ defmodule Makeup.Lexer.Groups do
     all_branches = branches ++ unmatched_token_branch ++ no_more_tokens_branch
 
     expr = quote do
+      def unquote(name)(tokens, group_prefix \\ "group") do
+        unquote(name_helper)([], tokens, group_prefix, 0) |> :lists.flatten
+      end
+
       defp unquote(name_helper)(stack, tokens, group_prefix, group_nr) do
         {new_stack, new_group_nr, head_tokens, rest_of_tokens} =
           case {stack, tokens} do
@@ -238,13 +249,10 @@ defmodule Makeup.Lexer.Groups do
             []
 
           _ ->
-            head_tokens ++ unquote(name_helper)(new_stack, rest_of_tokens, group_prefix, new_group_nr)
+            # Don't worry about the nested list, we'll flatten it later
+            [head_tokens |
+              unquote(name_helper)(new_stack, rest_of_tokens, group_prefix, new_group_nr)]
         end
-      end
-
-      @doc false
-      def unquote(name)(tokens, group_prefix \\ "group") do
-        unquote(name_helper)([], tokens, group_prefix, 0)
       end
     end
 
@@ -258,5 +266,12 @@ defmodule Makeup.Lexer.Groups do
     expr
   end
 
+  @doc """
+  Returns a random prefix for group ids in an HTML file.
+
+  This is useful to avoid collisions.
+  The group ids should be unique for a certain HTML document, and the easiest way of guaranteeing it
+  is by generating long random prefixes.
+  """
   def random_prefix(n), do: Enum.map(1..n, fn _ -> Enum.random(?0..?9) end) |> to_string
 end

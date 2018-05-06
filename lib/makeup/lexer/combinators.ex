@@ -24,6 +24,11 @@ defmodule Makeup.Lexer.Combinators do
 
   @doc """
   Joins the result of the given combinator into a single string.
+
+  This is not usually necessary, but it can be useful if you want to match on the tokens.
+  It's easier to match on the token `{:keyword, %{}, "unquote"}` than on something like
+  `{:keyword, %{}, ["u", "nquote"]}`, even though both tokens will be treated the same way
+  by the formatter.
   """
   def lexeme(combinator) do
     combinator |> traverse({__MODULE__, :__lexeme__, []})
@@ -67,6 +72,9 @@ defmodule Makeup.Lexer.Combinators do
 
   @doc """
   Matches one of the literal strings in the list.
+
+  The strings aren't matched in order: they are automatically sorted in a way
+  that guarantees that the longest strings will be tried first.
   """
   def word_from_list(words) do
     choice(for word <- reverse_sort(words), do: string(word))
@@ -74,13 +82,24 @@ defmodule Makeup.Lexer.Combinators do
 
   @doc """
   Matches one of the literal strings in the list and wraps it in a token of the given type.
+
+  This is is just a shorthand.
+
+  The strings aren't matched in order: they are automatically sorted in a way
+  that guarantees that the longest strings will be tried first.
   """
   def word_from_list(words, ttype) do
     choice(for word <- reverse_sort(words), do: string(word)) |> token(ttype)
   end
 
   @doc """
-  Matches one of the literal strings in the list and wraps it in a token of the given `type`, with the given `attrs`.
+  Matches one of the literal strings in the list and wraps it in a token of the given `type`,
+  with the given `attrs`.
+
+  This is is just a shorthand.
+
+  The strings aren't matched in order: they are automatically sorted in a way
+  that guarantees that the longest strings will be tried first.
   """
   def word_from_list(words, ttype, attrs) do
     choice(for word <- reverse_sort(words), do: string(word)) |> token(ttype, attrs)
@@ -89,7 +108,7 @@ defmodule Makeup.Lexer.Combinators do
   @doc """
   Matches a given combinator, repeated 0 or more times, surrounded by left and right delimiters.
 
-  Delimiters can be combinators or literal strings (wither both combinators or both literal strings)
+  Delimiters can be combinators or literal strings (either both combinators or both literal strings).
   """
   def many_surrounded_by(combinator, left, right) when is_binary(left) and is_binary(right) do
     token(left, :punctuation)
@@ -143,9 +162,23 @@ defmodule Makeup.Lexer.Combinators do
   end
 
   @doc """
-  TODO
+  A generic combinator for string-like syntactic structures.
+
+  It takes the following parameters:
+
+    * `left` - left delimiter for the string
+    * `right` - right delimiter for the string
+    * `middle` - a list of parsers to run inside the strig which parse entities
+      that aren't characters.
+      The most common example are special characters and string interpolation
+      for languages that support it like Elixir.
+    * `ttype` - the token type to use for the string delimiters and ordinary characters
+      (tokens parsd by the )
+    * `attrs` - metadata attributes for the string delimiters and ordinary characters
+
+  ## Example
   """
-  def string_like(left, right, middle, ttype, attrs \\ %{}) do
+  def string_like(left, right, middle, ttype, attrs \\ %{}) when is_list(middle) do
     left_combinator =
       case is_binary(left) do
         true -> string(left)

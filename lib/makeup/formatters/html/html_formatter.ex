@@ -1,4 +1,7 @@
 defmodule Makeup.Formatters.HTML.HTMLFormatter do
+  @moduledoc """
+  A turn the list of tokens into a 
+  """
 
   @group_highlight_js "lib/makeup/formatters/html/scripts/group_highlighter_javascript.js" |> File.read!
 
@@ -23,6 +26,9 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
     ]
   end
 
+  @doc """
+  format a single token into an iolist
+  """
   def format_token({tag, meta, value}) do
     escaped_value = escape(value)
     css_class = Makeup.Token.Utils.css_class_for_token_type(tag)
@@ -68,17 +74,30 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
     raise "Found `#{inspect(other)}` inside what should be an iolist"
   end
 
+  @doc """
+  Turns a list of tokens into an iolist which represents an HTML fragment.
+  This fragment can be embedded directly into an HTML document.
+  """
   def format_inner_as_iolist(tokens) do
     Enum.map(tokens, &format_token/1)
   end
 
+  @doc """
+  Turns a list of tokens into an HTML fragment.
+  This fragment can be embedded directly into an HTML document.
+  """
   def format_inner_as_binary(tokens) do
     tokens
     |> format_inner_as_iolist
     |> IO.iodata_to_binary
   end
 
-  def format_as_iolist(tokens, css_class \\ "highlight") do
+  @doc """
+  Turns a list of tokens into an iolist which represents an HTML fragment.
+  This fragment can be embedded directly into an HTML document.
+  """
+  def format_as_iolist(tokens, opts \\ []) do
+    css_class = Keyword.get(opts, :css_class, "highlight")
     inner = format_inner_as_iolist(tokens)
 
     [
@@ -90,16 +109,28 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
     ]
   end
 
-  def format_as_binary(tokens, css_class \\ "highlight") do
+  @doc """
+  Turns a list of tokens into an HTML fragment.
+  This fragment can be embedded directly into an HTML document.
+  """
+  def format_as_binary(tokens, opts \\ []) do
     tokens
-    |> format_as_iolist(css_class)
+    |> format_as_iolist(opts)
     |> IO.iodata_to_binary
   end
 
+  @doc """
+  Return the CSS stylesheet for a given style.
+  """
   def stylesheet(style, css_class \\ "highlight") do
     Makeup.Styles.HTML.Style.stylesheet(style, css_class)
   end
 
+  @doc """
+  Return a Javascript snippet to highlight code on mouseover.
+  This is "raw" javascript, and for inclusion in an HTML file
+  it must be wrapped in a `<script>` tag.
+  """
   def group_highlighter_javascript() do
     @group_highlight_js
   end

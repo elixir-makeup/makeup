@@ -36,7 +36,7 @@ The goal here is to make the code pretty to humans, not to gain any deep insight
 Makeup is not a general-purpose language parser.
 If it helps you write a better lexer, by all means implement a parser
 for the language in question so that you can lex it better,
-but in general it's probably not really worth it.
+but in general it's probably not worth it.
 
 Makeup is not a tool to hyperlink your source code.
 While such tools might be built on top of Makeup, it's not the original goal.
@@ -50,35 +50,26 @@ The *Lexer*, turns the raw source code into a flat list of tokens.
 A token has the following type:
 
 ```elixir
-{atom(), Map.t, String.t}
+{atom(), Map.t(), String.t()}
 ```
 
-The token format was inspired by the format of the elixir AST node.
+The token format was inspired by the format of an elixir AST node.
 
   * The *first* element of the 3-tuple is the type of token.
-    Makeup supports a limited type of tokens.
-    The supported token types are documented in the
-    [Makeup.Token.TokenTypes](https://hexdocs.pm/makeup/Makeup.Token.TokenTypes.html) module.
-    Although you can specify token types as atoms, the
-    [Makeup.Token.TokenTypes](https://hexdocs.pm/makeup/Makeup.Token.TokenTypes.html) module
-    defines a number of macros that expand into the correct atoms.
-    Using these macros whenever possible is good practice, because it protects you
-    from typos. Macro names will be checkes at compile times, unlike atoms, which
-    might give rise to errors that will only be visible at runtime
-    or may even remain undetected.
-    In some places, like pattern matching in function heads,
-    you won't be able to use the macros.
-    In those cases, just use the corresponding atom.
+    Makeup supports a limited number of token types.
+    The supported token types are: [...]
 
   * The *second* element is a map, containing some metadata about the token.
     Some formatters can make use of the metadata in order to improve the output.
-    The only piece of metadata currently used by the formatter is the `group_id` key.
-    It's used to mark delimiters as belonging to the same group, so that they are both
-    highlighted when the user places the mouse cursor on top of one of them.
+    The only metadata keys currently used by the HTML formatter are the `:group_id` and the `:unselectable` keys.
 
-  * The *third* element is the literal string containing the text that forms the token.
-    The concatenation of the strings from all the tokens
-    is equal to the contents fo the raw string used to generate the tokens.
+    * `:group_id` is used to mark delimiters as belonging to the same group, so that they   are both highlighted when the user places the mouse cursor on top of one of them.
+
+    * `:unselectable` is used to mark a certain token as impossible to select in the HTML   output.
+      It's useful for prompts in interactive interpreter sessions, which you usually don't want to copy and paste.
+
+  * The *third* element is an iolist (not exactly, see below) or a binary containing the    text that forms the token.
+    Makeup lexers should by default use iolists instead of binaries because they usually bring better performance.
 
 For example, the following are valid tokens:
 
@@ -86,43 +77,43 @@ For example, the following are valid tokens:
 
   * `{:string_double, %{}, "\"A String\""}` - represents a literal string
 
-  * `{:number_integer, %{}, "17"}` - represents the number `17`
+  * `{:number_integer, %{}, ["17"]}` - represents the number `17`
 
-This token format was inspired by the format of the Elixir AST nodes.
+### Note: iolists and makeup
+
+The above description of the third element of the token is a slight simplification.
+Erlang iolists can contain *binaries*, *lists* and *integers representing bytes*.
+They can't contain arbitrary integers that encode unicode characters.
+
+It's very inconvenient to handle these unicode characters inside the lexer,
+so Makeup has chosen to handle them inside the *formatter*, which actually writes the "iolists" into an output device or a string.
+
+Because the *formatter* usually has to escape the token values anyway, it is natural to "escape" unicode characters at that level.
+The easiest way
 
 ## Improving an Existing Lexer
 
-Current lexers are not necessarily written for efficiency.
 There are probably lots of opportunities to profile the lexers and increase performance.
-Although performance is important, being correct is the highest priority.
-When faced between the choice between being fast or being correct,
-we must always choose being correct.
-
-Some concrete suggestions:
-
-  * I the Elixir lexer, replace `alt([lit("word1"), lit("word2"), ...])`
-    with the `symbols()` parser and a `ExSpirit.TreeMap`.
-
-  * Write some utilities that make it easier to embed `ExSpirit.TreeMap`s
-    inside parsers defined with `defrule`
+Although performance is important, being correct is also important.
+When faced between the choice between being fast or being correct, you should be aware of the tradeoff.
 
 ## Writing a New Lexer
 
-Makeup lexers use the excellent ExSpirit parsing library be default.
-Writing an ExSpirit parser is not a requirement to write an Elixir lexer.
-As said above, a lexer is just a module that contains a function that turns
-the raw source code into a list of tokens.
+Makeup lexers use the excellent [NimbleParsec]() parsing library be default.
+Writing a NimbleParsec parser is not a requirement to write an Elixir lexer.
+As said above, a lexer is just a module that implements a the behaviour above.
 
 You can write your lexer in any way you want.
 You may use a different parsing library, a custom tokenizer, or even something like Regexs.
 On the other hand, by doing so you won't be making use of the combinators defined by Makeup.
-And ExSpirit is probably the best general-purpose parser available on Elixir.
 
-Because a Lexer is just a module that exports a certain function,
-there is no need for your parser to output the final token stream.
+Because a Lexer is just a module that implements a behaviour,
+there is no need for your grammar rules to output the final token stream.
 You can process the token stream any way you want, as long as the format is the same.
 For example, the current Elixir lexer iterates over the identifiers
 in the token list to highlight some keywords such as `if`, `when` and `defmodule`.
+
+### Matching delimiters
 
 A new lexer should make an effort to match delimiters such as parenthesis when appropriate.
 Such matched delimiters can be highlighted when the user places the mouse cursor
@@ -131,7 +122,11 @@ This makes it easy to visualize which part of the code is surrounded by the deli
 This is not a hard requirement for a new lexer, of course, but it's probably
 quite easy to implement for almost every language.
 
-TODO: Describe the most important parsers.
+<pre><code>
+<b>def</b> f<start data-group-id='group-1'>(</span>x<span  data-group-id='group-1'>)</span> <span  data-group-id='group-2'><b>do</b></span>
+  x + 1
+<span  data-group-id='group-2'><b>end</b></span>
+</code></pre>
 
 ### Aside: A Parser? Why not Regexes? The're simpler...
 
@@ -139,20 +134,37 @@ Can't I just use a Regex-based lexer like normal people?
 
 Well, you can if you really want to.
 But Regexes are very weak, and clearly not enough to lex most programming languages.
+
 Most Regex-based lexers (like those employed by Pygments) are actually state machines
 with arbitrarily deep stacks with state transitions driven by Regex matches.
 This is equivalent to a stack-based automaton, which allows these lexers
 to support arbitrary levels of nesting.
 
 This is good enough to reasonably tokenize most programming languages,
-but it's much more low level than ExSpirit.
-ExSpirit allows you to define possibly recursive rules
+but it's much more low level than NimbleParsec (and probably slower).
+NimbleParsec allows you to define possibly recursive rules
 and handles the state transitions itself, probably with better performance.
 
-It's easy to port a Pygments lexer into Elixir, and sometimes they are shorter.
-The hardest part is actually to extract the rules from the Regex-driven state machine.
+It's quite easy to port a Pygments lexer into Elixir, and sometimes they are shorter.
+The hardest part is actually extracting the rules from the Regex-driven state machine.
 
 # Formatter
+
+A formatter is an arbitrary module, which exports functions that perform arbitrary transformations on your list of tokens.
+The output formats are so different that it doesn't really make much sense for a formatter to implement a behaviour.
+Some formatters should only output iolists, while others should only output binaries.
+Others might not produce any output.
+Think for example of a code formatter for a GUI application, which may work only by running function calls that statefully change the UI state.
+
+Usually you'll want to implement two functions:
+
+  * `format_as_iolist(tokens, opts \\ [])` (converts a list of tokens into an iolist)
+  * `format_as_binary(tokens, opts \\ [])` (converts a list of tokens into a binary)
+
+### Note: why iolists?
+
+Concatenating strings is very slow on the BEAM.
+The fast way to generate strings is to first generate an iolist and then calling `IO.iodata_to_binary/1` on the iolist to generate a binary.
 
 ## Improving an Existing Formatter
 
@@ -167,8 +179,10 @@ Some formatters that would be interesting to have:
   * Formatter suitable for use in terminals
 
 While lexers will remain in separate packages for the foreseeable future,
-I think formatters should be available on Makeup itself.
+I think formatters could be available on Makeup itself.
 You can of course write your own formatters tailored to your projects.
+
+Be sure to ue iolists instead of binaries whenever possible.
 
 # Style
 
@@ -186,7 +200,7 @@ but for now, Makeup will only accept styles written as Elixir modules.
 
 It's possible that in the future there will be a macro that generates an
 Elixir module at compile-time from a CSS stylesheet.
-It's probably not too hard to write a simple CSS parser and interpreter using ExSpirit.
+It's probably not too hard to write a simple CSS parser and interpreter using NimbleParsec.
 
 # Writing Documentation
 
@@ -194,17 +208,17 @@ It's probably not too hard to write a simple CSS parser and interpreter using Ex
 
 This document is a work in progress.
 Educating people so that they can contribute (especially new lexers) is a priority.
-A tool such as Makeup depends ond the work of many people, as no one is proeficient
+A tool such as Makeup depends ond the work of many people, as no one is proficient
 in all the programming languages Makeup might have to highlight.
 
 Also, at the moment, the options recognized by the lexers are not documented properly.
-Currently only the Elixir lexer recognizes options.
 
-## Improving ExSpirit's Documentation
+## Improving NimbleParsec's Documentation
 
-Makeup lexers depend on ExSpirit.
-The ExSpirit docs are somewhat lacking at the moment.
-Teaching people how to use ExSpirit is important if we want to encourage new contributions.
+Makeup lexers depend on NimbleParsec.
+The NimbleParsec docs and test suite are somewhat lacking at the moment.
+Teaching people how to use NimbleParsec is important if we want to encourage new contributions.
+Currently, not many people are using NimbleParsec, so building a knowledge base around it might be important.
 
 # Adoption and Marketing
 
@@ -212,3 +226,33 @@ Increasing the adoption of Makeup is desirable, because not only it enhances
 the readability of code examples in the wild, but it might bring new contributors.
 New contributors bring new lexers, which bring higher adoption, which brings new contributors.
 This is a virtuous cycle we must encourage.
+
+<script>
+function makeupProcessMatchingGroups() {
+  var HIGHLIGHT_CLASS = "hll";
+  function onMouseEnter(evt) {
+    var groupId = evt.target.getAttribute("data-group-id");
+    siblings = document.querySelectorAll("[data-group-id='" + groupId + "']");
+    for (i = 0; i < siblings.length; ++i) {
+      siblings[i].classList.add(HIGHLIGHT_CLASS);
+    }
+  }
+
+  function onMouseLeave(evt) {
+    var groupId = evt.target.getAttribute("data-group-id");
+    siblings = document.querySelectorAll("[data-group-id='" + groupId + "']");
+    for (i = 0; i < siblings.length; ++i) {
+      siblings[i].classList.remove(HIGHLIGHT_CLASS);
+    }
+  }
+
+  var delims = document.querySelectorAll("[data-group-id]");
+  for(i=0; i < delims.length; i++) {
+    var elem = delims[i];
+    elem.addEventListener("mouseenter", onMouseEnter);
+    elem.addEventListener("mouseleave", onMouseLeave);
+  }
+}
+
+makeupProcessMatchingGroups();
+</script>
