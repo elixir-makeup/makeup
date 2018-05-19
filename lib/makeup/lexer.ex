@@ -23,7 +23,7 @@ defmodule Makeup.Lexer do
   @doc """
   Matches groups in a list of tokens.
   """
-  @callback match_groups([T.token()]) :: [T.token()]
+  @callback match_groups([T.token()], String.t) :: [T.token()]
 
   @doc """
   Lexes a string into a list of tokens

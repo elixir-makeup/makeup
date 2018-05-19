@@ -4,7 +4,7 @@ defmodule Makeup.Mixfile do
   def project do
     [
       app: :makeup,
-      version: "0.4.0",
+      version: "0.5.1",
       elixir: "~> 1.0",
       start_permanent: Mix.env == :prod,
       deps: deps(),
@@ -12,8 +12,12 @@ defmodule Makeup.Mixfile do
       name: "Makeup",
       source_url: "https://github.com/tmbb/makeup",
       homepage_url: "https://github.com/tmbb/makeup",
-      docs: [main: "Makeup", # The main page in the docs
-             extras: ["README.md"]],
+      docs: [
+        main: "readme", # The main page in the docs
+        extras: [
+          "README.md"
+        ]
+      ],
       # Package
       package: package(),
       description: description()
