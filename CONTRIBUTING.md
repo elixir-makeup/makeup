@@ -57,7 +57,7 @@ The token format was inspired by the format of an elixir AST node.
 
   * The *first* element of the 3-tuple is the type of token.
     Makeup supports a limited number of token types.
-    The supported token types are: [[...]][1]
+    The supported token types are: [[...]](#supported-tokens)
 
   * The *second* element is a map, containing some metadata about the token.
     Some formatters can make use of the metadata in order to improve the output.
@@ -228,7 +228,7 @@ New contributors bring new lexers, which bring higher adoption, which brings new
 This is a virtuous cycle we must encourage.
 
 ---
-#### Supported Tokens
+#### Supported Tokens <a id="supported-tokens"></a>
 [1]: \
 
 ```elixir
