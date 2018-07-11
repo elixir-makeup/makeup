@@ -57,7 +57,7 @@ The token format was inspired by the format of an elixir AST node.
 
   * The *first* element of the 3-tuple is the type of token.
     Makeup supports a limited number of token types.
-    The supported token types are: [...]
+    The supported token types are: [[...]](#supported-tokens)
 
   * The *second* element is a map, containing some metadata about the token.
     Some formatters can make use of the metadata in order to improve the output.
@@ -99,7 +99,7 @@ When faced between the choice between being fast or being correct, you should be
 
 ## Writing a New Lexer
 
-Makeup lexers use the excellent [NimbleParsec]() parsing library be default.
+Makeup lexers use the excellent [NimbleParsec](https://github.com/plataformatec/nimble_parsec) parsing library be default.
 Writing a NimbleParsec parser is not a requirement to write an Elixir lexer.
 As said above, a lexer is just a module that implements a the behaviour above.
 
@@ -226,6 +226,91 @@ Increasing the adoption of Makeup is desirable, because not only it enhances
 the readability of code examples in the wild, but it might bring new contributors.
 New contributors bring new lexers, which bring higher adoption, which brings new contributors.
 This is a virtuous cycle we must encourage.
+
+---
+#### Supported Tokens <a id="supported-tokens"></a>
+[1]: \
+
+```elixir
+    :comment
+    :comment_hashbang
+    :comment_multiline
+    :comment_preproc
+    :comment_preproc_file
+    :comment_single
+    :comment_special
+    :error
+    :escape
+    :generic
+    :generic_deleted
+    :generic_emph,
+    :generic_error
+    :generic_heading,
+    :generic_inserted
+    :generic_output,
+    :generic_prompt
+    :generic_strong
+    :generic_subheading
+    :generic_traceback
+    :keyword
+    :keyword_constant
+    :keyword_declaration,
+    :keyword_namespace
+    :keyword_pseudo
+    :keyword_reserved
+    :keyword_type,
+    :literal
+    :literal_date
+    :name
+    :name_attribute
+    :name_builtin,
+    :name_builtin_pseudo
+    :name_class
+    :name_constant
+    :name_decorator
+    :name_entity
+    :name_exception
+    :name_function
+    :name_function_magic
+    :name_label
+    :name_namespace
+    :name_other
+    :name_property
+    :name_tag
+    :name_variable,
+    :name_variable_class,
+    :name_variable_global
+    :name_variable_instance
+    :name_variable_magic
+    :number,
+    :number_bin
+    :number_float,
+    :number_hex
+    :number_integer
+    :number_integer_long
+    :number_oct,
+    :operator,
+    :operator_word,
+    :other
+    :punctuation
+    :string
+    :string_affix
+    :string_backtick,
+    :string_char
+    :string_delimiter,
+    :string_doc
+    :string_double
+    :string_escape
+    :string_heredoc
+    :string_interpol,
+    :string_other
+    :string_regex
+    :string_sigil
+    :string_single
+    :string_symbol
+    :text
+    :whitespace
+```
 
 <script>
 function makeupProcessMatchingGroups() {
