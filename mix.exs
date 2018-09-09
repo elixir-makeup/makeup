@@ -4,7 +4,7 @@ defmodule Makeup.Mixfile do
   def project do
     [
       app: :makeup,
-      version: "0.5.1",
+      version: "0.5.2",
       elixir: "~> 1.0",
       start_permanent: Mix.env == :prod,
       deps: deps(),
@@ -50,8 +50,7 @@ defmodule Makeup.Mixfile do
   defp deps do
     [
       {:ex_doc, "~> 0.14", only: [:dev], runtime: false},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
-      {:nimble_parsec, "~> 0.2.2"}
+      {:nimble_parsec, "~> 0.4"}
     ]
   end
 end

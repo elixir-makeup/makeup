@@ -26,7 +26,7 @@ defmodule Makeup do
     end
 
     lexer_options = case options[:lexer_options] do
-      nil -> %{}
+      nil -> []
       opts -> opts
     end
 
@@ -48,7 +48,7 @@ defmodule Makeup do
     end
 
     lexer_options = case options[:lexer_options] do
-      nil -> %{}
+      nil -> []
       opts -> opts
     end
 
