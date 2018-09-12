@@ -1,17 +1,21 @@
 defmodule Makeup.Mixfile do
   use Mix.Project
 
+  @version "0.5.3"
+  @url "https://github.com/tmbb/makeup"
+
   def project do
     [
       app: :makeup,
       version: "0.5.2",
-      elixir: "~> 1.0",
+      elixir: "~> 1.4",
       start_permanent: Mix.env == :prod,
       deps: deps(),
       # Docs
       name: "Makeup",
-      source_url: "https://github.com/tmbb/makeup",
-      homepage_url: "https://github.com/tmbb/makeup",
+      source_url: @url,
+      homepage_url: @url,
+      aliases: [docs: &build_docs/1],
       docs: [
         main: "readme", # The main page in the docs
         extras: [
@@ -35,7 +39,7 @@ defmodule Makeup.Mixfile do
       name: :makeup,
       licenses: ["BSD"],
       maintainers: ["Tiago Barroso <tmbb@campus.ul.pt>"],
-      links: %{"GitHub" => "https://github.com/tmbb/makeup"}
+      links: %{"GitHub" => @url}
     ]
   end
 
@@ -49,9 +53,22 @@ defmodule Makeup.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, "~> 0.14", only: [:dev], runtime: false},
       {:nimble_parsec, "~> 0.4"}
     ]
+  end
+
+  defp build_docs(_) do
+    Mix.Task.run("compile")
+    ex_doc = Path.join(Mix.Local.path_for(:escript), "ex_doc")
+
+    unless File.exists?(ex_doc) do
+      raise "cannot build docs because escript for ex_doc is not installed"
+    end
+
+    args = ["Makeup", @version, Mix.Project.compile_path()]
+    opts = ~w[--main Makeup --source-ref v#{@version} --source-url #{@url}]
+    System.cmd(ex_doc, args ++ opts)
+    Mix.shell().info("Docs built successfully")
   end
 end
 

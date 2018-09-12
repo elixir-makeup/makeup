@@ -182,7 +182,7 @@ While lexers will remain in separate packages for the foreseeable future,
 I think formatters could be available on Makeup itself.
 You can of course write your own formatters tailored to your projects.
 
-Be sure to ue iolists instead of binaries whenever possible.
+Be sure to use iolists instead of binaries whenever possible.
 
 # Style
 
