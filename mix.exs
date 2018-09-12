@@ -1,13 +1,13 @@
 defmodule Makeup.Mixfile do
   use Mix.Project
 
-  @version "0.5.3"
+  @version "0.5.4"
   @url "https://github.com/tmbb/makeup"
 
   def project do
     [
       app: :makeup,
-      version: "0.5.2",
+      version: @version,
       elixir: "~> 1.4",
       start_permanent: Mix.env == :prod,
       deps: deps(),
