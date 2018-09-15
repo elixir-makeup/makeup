@@ -1,5 +1,7 @@
 defmodule MakeupTest.Lexer.CombinatorsTest do
   use ExUnit.Case, async: true
+  alias MakeupTest.Lexer.Fixtures.TokenLexer
+  alias MakeupTest.Lexer.Fixtures.WordListLexer
 
   describe "tokens" do
     test "token with string literal" do

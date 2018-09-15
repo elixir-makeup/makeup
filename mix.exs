@@ -9,6 +9,7 @@ defmodule Makeup.Mixfile do
       app: :makeup,
       version: @version,
       elixir: "~> 1.4",
+      elixirc_paths: compiler_paths(Mix.env()),
       start_permanent: Mix.env == :prod,
       deps: deps(),
       # Docs
@@ -34,6 +35,10 @@ defmodule Makeup.Mixfile do
     """
   end
 
+  def compiler_paths(:dev), do: ["test/helpers"] ++ compiler_paths(:prod)
+  def compiler_paths(:test), do: ["test/helpers"] ++ compiler_paths(:prod)
+  def compiler_paths(_), do: ["lib"]
+
   defp package do
     [
       name: :makeup,
@@ -53,7 +58,8 @@ defmodule Makeup.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:nimble_parsec, "~> 0.4"}
+      {:nimble_parsec, "~> 0.4"},
+      {:stream_data, "~> 0.4.2", only: [:dev, :test]}
     ]
   end
 
