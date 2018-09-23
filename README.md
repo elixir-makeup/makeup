@@ -102,7 +102,7 @@ TODO
 
 Contributions are highly appreciated.
 The mos direct way you can contribute to Makeup is by writing a new lexer.
-You can find some information here: [CONTRIBUTING.md]
+You can find some information here: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## LICENSE
 
