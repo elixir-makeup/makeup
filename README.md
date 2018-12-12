@@ -53,6 +53,10 @@ be found at [https://hexdocs.pm/makeup](https://hexdocs.pm/makeup).
 
 The ExDocs are still pretty primitive.
 
+## Changes
+
+Changes from previous versions are details in the [Changelog](CHANGELOG.md).
+
 ## Quickstart
 
 To highlight some Elixir code (newlines added for clarity):
