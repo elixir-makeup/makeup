@@ -1,7 +1,7 @@
 defmodule Makeup.Mixfile do
   use Mix.Project
 
-  @version "0.6.0"
+  @version "0.5.6"
   @url "https://github.com/tmbb/makeup"
 
   def project do
@@ -42,7 +42,8 @@ defmodule Makeup.Mixfile do
 
   defp aliases do
     [
-      docs: &build_docs/1,
+      # docs: &build_docs/1,
+      docs: fn _ -> nil end,
       release: "run scripts/release.exs"
     ]
   end
