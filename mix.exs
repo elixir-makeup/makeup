@@ -58,7 +58,7 @@ defmodule Makeup.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:nimble_parsec, "~> 0.4"},
+      {:nimble_parsec, "~> 0.4.0"},
       {:stream_data, "~> 0.4.2", only: [:dev, :test]}
     ]
   end
