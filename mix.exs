@@ -1,7 +1,7 @@
 defmodule Makeup.Mixfile do
   use Mix.Project
 
-  @version "0.5.5"
+  @version "0.6.0"
   @url "https://github.com/tmbb/makeup"
 
   def project do
@@ -58,7 +58,7 @@ defmodule Makeup.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:nimble_parsec, "~> 0.4.0"},
+      {:nimble_parsec, "~> 0.5"},
       {:stream_data, "~> 0.4.2", only: [:dev, :test]}
     ]
   end

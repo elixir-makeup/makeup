@@ -42,7 +42,7 @@ by adding `makeup` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:makeup, "~> 0.4.0"}
+    {:makeup, "~> 0.5"}
   ]
 end
 ```
