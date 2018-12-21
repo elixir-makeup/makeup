@@ -11,7 +11,7 @@ defmodule Makeup.Lexer.Combinators do
   end
 
   def token(combinator, token_type) do
-    combinator |> traverse({__MODULE__, :__token__, [token_type]})
+    combinator |> post_traverse({__MODULE__, :__token__, [token_type]})
   end
 
   def token(literal, token_type, attrs) when is_binary(literal) and is_map(attrs) do
@@ -19,7 +19,7 @@ defmodule Makeup.Lexer.Combinators do
   end
 
   def token(combinator, token_type, attrs) when is_map(attrs) do
-    combinator |> traverse({__MODULE__, :__token__, [token_type, attrs]})
+    combinator |> post_traverse({__MODULE__, :__token__, [token_type, attrs]})
   end
 
   @doc """
@@ -31,7 +31,7 @@ defmodule Makeup.Lexer.Combinators do
   by the formatter.
   """
   def lexeme(combinator) do
-    combinator |> traverse({__MODULE__, :__lexeme__, []})
+    combinator |> post_traverse({__MODULE__, :__lexeme__, []})
   end
 
   @doc false
@@ -113,18 +113,18 @@ defmodule Makeup.Lexer.Combinators do
   def many_surrounded_by(combinator, left, right) when is_binary(left) and is_binary(right) do
     token(left, :punctuation)
     |> concat(
-        repeat_until(
-          combinator,
-          [string(right)]))
+        repeat(
+          lookahead_not(string(right))
+          |> concat(combinator)))
     |> concat(token(right, :punctuation))
   end
 
   def many_surrounded_by(combinator, left, right) do
     left
     |> concat(
-        repeat_until(
-          combinator,
-          [right]))
+        repeat(
+          lookahead_not(right)
+          |> concat(combinator)))
     |> concat(right)
   end
 
@@ -135,9 +135,9 @@ defmodule Makeup.Lexer.Combinators do
   def many_surrounded_by(combinator, left, right, ttype) do
     token(left, ttype)
     |> concat(
-        repeat_until(
-          combinator,
-          [string(right)]))
+        repeat(
+          lookahead_not(string(right))
+          |> concat(combinator)))
     |> concat(token(right, ttype))
   end
 
@@ -194,9 +194,9 @@ defmodule Makeup.Lexer.Combinators do
     choices = middle ++ [utf8_char([])]
 
     left_combinator
-    |> repeat_until(choice(choices), [right_combinator])
+    |> repeat(lookahead_not(right_combinator) |> choice(choices))
     |> concat(right_combinator)
-    |> traverse({__MODULE__, :collect_raw_chars_and_binaries, [ttype, attrs]})
+    |> post_traverse({__MODULE__, :collect_raw_chars_and_binaries, [ttype, attrs]})
   end
 end
 
