@@ -1,5 +1,61 @@
 This document is meant to help people who want to contribute to Makeup.
 
+# The release script
+
+This project uses a release script to make it easy to publish a new release.
+The script perform a series of checks and executes a number of tasks.
+
+The script was inspired by the continuous release philosophy of the python Hypothesis library.
+You can find a high-level description [here](https://hypothesis.works/articles/continuous-releases/).
+There are many differences though.
+The main one is that this release script acts purely locally, and must be explicitly invoked,
+while the one in hypothesis is a commit hook that runs on a continuous integration server.
+
+Currently, the script does the following:
+
+  1. Run the tests (abort the release if any tests fail)
+  2. Get the current version from the `mix.exs` file.
+  3. Read a special `RELEASE.md` file to extract the release type (major, minor or patch)
+     and the text to add as a new entry in the CHANGELOG.
+  4. Update the version
+  5. Add the new version to the `mix.exs` file
+  6. Add  anew entry to the CHANGELOG
+  7. Commit the chnages to git
+  8. Add a `vX.Y.Z` tag to the repo, so that it's easy to find each release
+  9. Remove the `RELEASE.md` file, which must be written again for a new release
+  10. Publish the package on hex.
+
+It decreases the number of mistakes and the amount of commands you need to run.
+
+The path to the script is `scripts/release.exs`.
+The `mix.exs` file defines an alias so that you can run the script `mix release`
+
+## Special files
+
+### The `RELEASE.md` file
+
+The `RELEASE.md` file must start with a line of the form `RELEASE_TYPE: type`,
+where type is either `major`, `minor` or `patch`.
+
+The following lines are used as the text for the entry in the changelog file.
+
+A simple example of a `RELEASE.md` file would be:
+
+    RELEASE_TYPE: minor
+
+    This is a minor release.
+    It adds a minor feature and fixes two important bugs.
+
+### The `CHANGELOG.md` file
+
+The `CHANGELOG.md` file must contain the following line:
+
+    <!-- %% CHANGELOG_ENTRIES %% -->
+
+The newest changelog entry will be under this line.
+
+## Using
+
 # High Level Architecture
 
 ## What Makeup Is
@@ -123,7 +179,7 @@ This is not a hard requirement for a new lexer, of course, but it's probably
 quite easy to implement for almost every language.
 
 <pre><code>
-<b>def</b> f<start data-group-id='group-1'>(</span>x<span  data-group-id='group-1'>)</span> <span  data-group-id='group-2'><b>do</b></span>
+<b>def</b> f<span data-group-id='group-1'>(</span>x<span  data-group-id='group-1'>)</span> <span  data-group-id='group-2'><b>do</b></span>
   x + 1
 <span  data-group-id='group-2'><b>end</b></span>
 </code></pre>
