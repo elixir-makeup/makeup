@@ -1,6 +1,11 @@
 defmodule Makeup.Registry do
   @moduledoc """
   A registry that allows users to dynamically register new makeup lexers.
+
+  Lexers should register themselves on application start.
+  That way, you can add support for new programming languages by depending on the relevant lexers.
+  This is useful for projects such as ExDoc, which might contain code
+  in a number of different programming languages.
   """
 
   @registry_key :lexer_name_registry
@@ -31,11 +36,20 @@ defmodule Makeup.Registry do
 
   @doc """
   Fetches a lexer from Makeup's registry.
+
+  Returns either `{:ok, {lexer, options}}` or `:error`.
+  This behaviour is based on `Map.fetch/2`.
   """
   def fetch_lexer_by_name(name) do
     Map.fetch(get_name_registry(), name)
   end
 
+  @doc """
+  Fetches a lexer from Makeup's registry.
+
+  Returns either `{lexer, options}` or raises an `KeyError`.
+  This behaviour is based on `Map.fetch!/2`.
+  """
   def fetch_lexer_by_name!(name) do
     Map.fetch!(get_name_registry(), name)
   end

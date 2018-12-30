@@ -169,6 +169,11 @@ You can process the token stream any way you want, as long as the format is the 
 For example, the current Elixir lexer iterates over the identifiers
 in the token list to highlight some keywords such as `if`, `when` and `defmodule`.
 
+Makeup now provides an API to register lexers on application start.
+This means that you can dynamically add support for a new programming languages by just depending on a new lexer (as long as the application which is using Makeup knows how to get a lexer from the registry, of course).
+
+The lexer has the responsibility to register itself on application start.
+
 ### Matching delimiters
 
 A new lexer should make an effort to match delimiters such as parenthesis when appropriate.
