@@ -26,15 +26,13 @@ defmodule MakeupTest.Lexer.Fixtures.TokenLexer do
 
   root_combinator = repeat(root_element_combinator)
 
-  # TODO: the @impl below raises a warning. Investigate why
-  # @impl Makeup.Lexer
+  @impl Makeup.Lexer
   defparsec(
     :root,
     root_combinator
   )
 
-  # TODO: the @impl below raises a warning. Investigate why
-  # @impl Makeup.Lexer
+  @impl Makeup.Lexer
   defparsec(
     :root_element,
     root_element_combinator
