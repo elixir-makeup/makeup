@@ -1,7 +1,18 @@
 RELEASE_TYPE: minor
 
-Adds a register where lexer developers can register their lexers.
-This allows one to pick a lexer based on the language name.
+This release adds a new file extension registry for lexers.
+This means that it's now possible to lookup lexers by file extension.
+Since the previous release it was already possible to lookup lexers by language name.
+For example:
 
-The goal is for Makeup to be aware of the avaliable lexers.
-In a project such as ExDoc this allows Makeup to support an unbounded number of languages just by declaring the lexer as a dependency.
+```elixir
+elixir_lexer = Makeup.Registry.fetch_lexer_by_extension!("elixir")
+```
+
+Now you can also do this this:
+
+```elixir
+elixir_lexer = Makeup.Registry.get_lexer_by_extension!("ex")
+```
+
+Documentation of the registry functionality was also improved.
