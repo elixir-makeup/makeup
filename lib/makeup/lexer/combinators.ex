@@ -1,4 +1,7 @@
 defmodule Makeup.Lexer.Combinators do
+  @moduledoc """
+  Common components useful in many lexers.
+  """
   import NimbleParsec
 
   @doc """
@@ -44,7 +47,7 @@ defmodule Makeup.Lexer.Combinators do
   end
 
   def __token__(_rest, args, context, _line, _offset, token_type) do
-    {[{token_type, %{}, args |> :lists.reverse}], context}
+    {[{token_type, %{}, args |> :lists.reverse()}], context}
   end
 
   @doc false
@@ -57,12 +60,12 @@ defmodule Makeup.Lexer.Combinators do
   end
 
   def __token__(_rest, args, context, _line, _offset, token_type, attrs) do
-    {[{token_type, attrs, args |> :lists.reverse}], context}
+    {[{token_type, attrs, args |> :lists.reverse()}], context}
   end
 
   @doc false
   def __lexeme__(_rest, args, context, _line, _offset) do
-    result = args |> List.wrap |> :lists.reverse |> IO.iodata_to_binary
+    result = args |> List.wrap() |> :lists.reverse() |> IO.iodata_to_binary()
     {[result], context}
   end
 
@@ -75,6 +78,10 @@ defmodule Makeup.Lexer.Combinators do
 
   The strings aren't matched in order: they are automatically sorted in a way
   that guarantees that the longest strings will be tried first.
+
+  ## Examples
+
+      keywords = word_from_list(~w[do end catch after rescue])
   """
   def word_from_list(words) do
     choice(for word <- reverse_sort(words), do: string(word))
@@ -87,6 +94,10 @@ defmodule Makeup.Lexer.Combinators do
 
   The strings aren't matched in order: they are automatically sorted in a way
   that guarantees that the longest strings will be tried first.
+
+  ## Examples
+
+      keywords = word_from_list(~w[do end catch after rescue], :keyword)
   """
   def word_from_list(words, ttype) do
     choice(for word <- reverse_sort(words), do: string(word)) |> token(ttype)
@@ -113,18 +124,22 @@ defmodule Makeup.Lexer.Combinators do
   def many_surrounded_by(combinator, left, right) when is_binary(left) and is_binary(right) do
     token(left, :punctuation)
     |> concat(
-        repeat(
-          lookahead_not(string(right))
-          |> concat(combinator)))
+      repeat(
+        lookahead_not(string(right))
+        |> concat(combinator)
+      )
+    )
     |> concat(token(right, :punctuation))
   end
 
   def many_surrounded_by(combinator, left, right) do
     left
     |> concat(
-        repeat(
-          lookahead_not(right)
-          |> concat(combinator)))
+      repeat(
+        lookahead_not(right)
+        |> concat(combinator)
+      )
+    )
     |> concat(right)
   end
 
@@ -135,12 +150,15 @@ defmodule Makeup.Lexer.Combinators do
   def many_surrounded_by(combinator, left, right, ttype) do
     token(left, ttype)
     |> concat(
-        repeat(
-          lookahead_not(string(right))
-          |> concat(combinator)))
+      repeat(
+        lookahead_not(string(right))
+        |> concat(combinator)
+      )
+    )
     |> concat(token(right, ttype))
   end
 
+  @doc false
   def collect_raw_chars_and_binaries(_rest, args, context, _line, _offset, ttype, attrs) do
     result = merge_chars_helper(ttype, attrs, [], args)
     {result, context}
@@ -148,7 +166,8 @@ defmodule Makeup.Lexer.Combinators do
 
   defp merge_chars_helper(_ttype, _attrs, [], []), do: []
 
-  defp merge_chars_helper(ttype, attrs, acc, [next | rest]) when is_integer(next) or is_binary(next) do
+  defp merge_chars_helper(ttype, attrs, acc, [next | rest])
+       when is_integer(next) or is_binary(next) do
     merge_chars_helper(ttype, attrs, [next | acc], rest)
   end
 
@@ -166,8 +185,8 @@ defmodule Makeup.Lexer.Combinators do
 
   It takes the following parameters:
 
-    * `left` - left delimiter for the string
-    * `right` - right delimiter for the string
+    * `left` - left delimiter for the string. Can be a binary or a general combinator.
+    * `right` - right delimiter for the string. Can be a binary or a general combinator
     * `middle` - a list of parsers to run inside the strig which parse entities
       that aren't characters.
       The most common example are special characters and string interpolation
@@ -176,7 +195,23 @@ defmodule Makeup.Lexer.Combinators do
       (tokens parsd by the )
     * `attrs` - metadata attributes for the string delimiters and ordinary characters
 
-  ## Example
+  ## Examples
+
+      single_quoted_heredocs = string_like(
+        "'''",
+        "'''",
+        combinators_inside_string,
+        :string_char
+      )
+
+  The above is equivalent to the following more explicit version:
+
+      single_quoted_heredocs = string_like(
+        string("'''"),
+        string("'''"),
+        combinators_inside_string,
+        :string_char
+      )
   """
   def string_like(left, right, middle, ttype, attrs \\ %{}) when is_list(middle) do
     left_combinator =
@@ -199,6 +234,3 @@ defmodule Makeup.Lexer.Combinators do
     |> post_traverse({__MODULE__, :collect_raw_chars_and_binaries, [ttype, attrs]})
   end
 end
-
-
-

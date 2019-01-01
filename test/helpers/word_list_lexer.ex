@@ -1,21 +1,24 @@
 defmodule MakeupTest.Lexer.Fixtures.WordListLexer do
+  @moduledoc false
   import NimbleParsec
   import Makeup.Lexer.Combinators
   @behaviour Makeup.Lexer
 
-  language =
-    # Words written deliberately in an order that would make
-    # a naive implementation return wrong matches
-    word_from_list(~w(
+  # Words written deliberately in an order that would make
+  # a naive implementation return wrong matches
+  language = word_from_list(~w(
       c cpp elixir erlang java javascript
     ))
 
+  # Words written deliberately in an order that would make
+  # a naive implementation return wrong matches
   letters =
-    # Words written deliberately in an order that would make
-    # a naive implementation return wrong matches
-    word_from_list(~w(
+    word_from_list(
+      ~w(
       a aa aaa b bb
-    ), :letters)
+    ),
+      :letters
+    )
 
   root_element_combinator =
     choice([
@@ -23,18 +26,21 @@ defmodule MakeupTest.Lexer.Fixtures.WordListLexer do
       letters
     ])
 
-  root_combinator =
-    repeat(root_element_combinator)
+  root_combinator = repeat(root_element_combinator)
 
   # TODO: the @impl below raises a warning. Investigate why
   # @impl Makeup.Lexer
-  defparsec :root,
+  defparsec(
+    :root,
     root_combinator
+  )
 
   # TODO: the @impl below raises a warning. Investigate why
   # @impl Makeup.Lexer
-  defparsec :root_element,
+  defparsec(
+    :root_element,
     root_element_combinator
+  )
 
   @impl Makeup.Lexer
   def postprocess(tokens, _options \\ []), do: tokens

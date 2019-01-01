@@ -1,6 +1,9 @@
 defmodule Makeup.Lexer.Groups do
   @moduledoc """
-  TODO
+  Utilities to highlight groups of tokens on mouseover.
+
+  The typical example is to highlight matching pairs of delimiters,
+  such as parenthesis, angle brackets, etc.
   """
 
   defp make_match([] = _patterns, _varnames, rest_of_tokens_varname) do
@@ -11,8 +14,12 @@ defmodule Makeup.Lexer.Groups do
 
   defp make_match([pattern | patterns], [varname | varnames], rest_of_tokens_varname) do
     var = Macro.var(varname, __MODULE__)
+
     quote do
-      [unquote(pattern) = unquote(var) | unquote(make_match(patterns, varnames, rest_of_tokens_varname))]
+      [
+        unquote(pattern) = unquote(var)
+        | unquote(make_match(patterns, varnames, rest_of_tokens_varname))
+      ]
     end
   end
 
@@ -50,16 +57,16 @@ defmodule Makeup.Lexer.Groups do
     group_id = Macro.var(:group_id, __MODULE__)
     rest_of_tokens = Macro.var(:rest_of_tokens, __MODULE__)
 
-    n = length pattern
+    n = length(pattern)
 
-    token_varnames = for i <- 1..n, do: String.to_atom "token__#{i}"
-    ttype_varnames = for i <- 1..n, do: String.to_atom "ttype__#{i}"
-    attr_varnames = for i <- 1..n, do: String.to_atom "attr__#{i}"
-    text_varnames = for i <- 1..n, do: String.to_atom "text__#{i}"
+    token_varnames = for i <- 1..n, do: String.to_atom("token__#{i}")
+    ttype_varnames = for i <- 1..n, do: String.to_atom("ttype__#{i}")
+    attr_varnames = for i <- 1..n, do: String.to_atom("attr__#{i}")
+    text_varnames = for i <- 1..n, do: String.to_atom("text__#{i}")
     tokens_data = List.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
 
     pattern_matches =
-      for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data  do
+      for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data do
         token = Macro.var(token_varname, __MODULE__)
         ttype = Macro.var(ttype_varname, __MODULE__)
         attr = Macro.var(attr_varname, __MODULE__)
@@ -94,16 +101,16 @@ defmodule Makeup.Lexer.Groups do
     rest_of_stack = Macro.var(:rest_of_stack, __MODULE__)
     rest_of_tokens = Macro.var(:rest_of_tokens, __MODULE__)
 
-    n = length pattern
+    n = length(pattern)
 
-    token_varnames = for i <- 1..n, do: String.to_atom "token__#{i}"
-    ttype_varnames = for i <- 1..n, do: String.to_atom "ttype__#{i}"
-    attr_varnames = for i <- 1..n, do: String.to_atom "attr__#{i}"
-    text_varnames = for i <- 1..n, do: String.to_atom "text__#{i}"
+    token_varnames = for i <- 1..n, do: String.to_atom("token__#{i}")
+    ttype_varnames = for i <- 1..n, do: String.to_atom("ttype__#{i}")
+    attr_varnames = for i <- 1..n, do: String.to_atom("attr__#{i}")
+    text_varnames = for i <- 1..n, do: String.to_atom("text__#{i}")
     tokens_data = List.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
 
     pattern_matches =
-      for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data  do
+      for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data do
         token = Macro.var(token_varname, __MODULE__)
         ttype = Macro.var(ttype_varname, __MODULE__)
         attr = Macro.var(attr_varname, __MODULE__)
@@ -118,6 +125,7 @@ defmodule Makeup.Lexer.Groups do
       quote do
         [{unquote(stack_name), current_group_nr} | unquote(rest_of_stack)]
       end
+
     tokens_pattern = make_match(pattern, token_varnames, :rest_of_tokens)
 
     tokens_for_result = List.zip([ttype_varnames, attr_varnames, text_varnames])
@@ -140,16 +148,16 @@ defmodule Makeup.Lexer.Groups do
     rest_of_stack = Macro.var(:rest_of_stack, __MODULE__)
     rest_of_tokens = Macro.var(:rest_of_tokens, __MODULE__)
 
-    n = length pattern
+    n = length(pattern)
 
-    token_varnames = for i <- 1..n, do: String.to_atom "token__#{i}"
-    ttype_varnames = for i <- 1..n, do: String.to_atom "ttype__#{i}"
-    attr_varnames = for i <- 1..n, do: String.to_atom "attr__#{i}"
-    text_varnames = for i <- 1..n, do: String.to_atom "text__#{i}"
+    token_varnames = for i <- 1..n, do: String.to_atom("token__#{i}")
+    ttype_varnames = for i <- 1..n, do: String.to_atom("ttype__#{i}")
+    attr_varnames = for i <- 1..n, do: String.to_atom("attr__#{i}")
+    text_varnames = for i <- 1..n, do: String.to_atom("text__#{i}")
     tokens_data = List.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
 
     pattern_matches =
-      for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data  do
+      for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data do
         token = Macro.var(token_varname, __MODULE__)
         ttype = Macro.var(ttype_varname, __MODULE__)
         attr = Macro.var(attr_varname, __MODULE__)
@@ -164,6 +172,7 @@ defmodule Makeup.Lexer.Groups do
       quote do
         [{unquote(stack_name), current_group_nr} | unquote(rest_of_stack)]
       end
+
     tokens_pattern = make_match(pattern, token_varnames, :rest_of_tokens)
 
     tokens_for_result = List.zip([ttype_varnames, attr_varnames, text_varnames])
@@ -183,17 +192,23 @@ defmodule Makeup.Lexer.Groups do
     middle_patterns = Keyword.get(parts, :middle, [])
     close_patterns = Keyword.fetch!(parts, :close)
 
-    open_branches_ast = Enum.map(open_patterns,
-      fn pattern -> open_branch(stack_name, pattern, :group_prefix, :group_nr)
-    end)
+    open_branches_ast =
+      Enum.map(
+        open_patterns,
+        fn pattern -> open_branch(stack_name, pattern, :group_prefix, :group_nr) end
+      )
 
-    middle_branches_ast = Enum.map(middle_patterns,
-      fn pattern -> middle_branch(stack_name, pattern, :group_prefix, :group_nr)
-    end)
+    middle_branches_ast =
+      Enum.map(
+        middle_patterns,
+        fn pattern -> middle_branch(stack_name, pattern, :group_prefix, :group_nr) end
+      )
 
-    close_branches_ast = Enum.map(close_patterns,
-      fn pattern -> close_branch(stack_name, pattern, :group_prefix, :group_nr)
-    end)
+    close_branches_ast =
+      Enum.map(
+        close_patterns,
+        fn pattern -> close_branch(stack_name, pattern, :group_prefix, :group_nr) end
+      )
 
     open_branches_ast ++ middle_branches_ast ++ close_branches_ast
   end
@@ -204,18 +219,51 @@ defmodule Makeup.Lexer.Groups do
 
   Takes as arguments a `name` for the function (must be an atom) and a list
   containing the patterns describing the matching groups.
+
+  ## Examples
+
+      # Extracted from the default elixir lexer that ships with ExDoc
+      defgroupmatcher :match_groups, [
+        # Match opening and closing parenthesis
+        parentheses: [
+          open: [[{:punctuation, %{language: :elixir}, "("}]],
+          close: [[{:punctuation, %{language: :elixir}, ")"}]]
+        ],
+
+        # Match more complex delimiters, but still an open and close delimiter
+        fn_end: [
+          open: [[{:keyword, %{language: :elixir}, "fn"}]],
+          close: [[{:keyword, %{language: :elixir}, "end"}]]
+        ]
+
+        # Match delimiters with middle components
+        do_end: [
+          open: [
+            [{:keyword, %{language: :elixir}, "do"}]
+          ],
+          middle: [
+            [{:keyword, %{language: :elixir}, "else"}],
+            [{:keyword, %{language: :elixir}, "catch"}],
+            [{:keyword, %{language: :elixir}, "rescue"}],
+            [{:keyword, %{language: :elixir}, "after"}]
+          ],
+          close: [
+            [{:keyword, %{language: :elixir}, "end"}]
+          ]
+        ]
+      ]
   """
   defmacro defgroupmatcher(name, stacks, opts \\ []) do
     name_helper =
       name
-      |> Atom.to_string
+      |> Atom.to_string()
       |> Kernel.<>("__helper")
-      |> String.to_atom
+      |> String.to_atom()
 
     branches =
       stacks
       |> Enum.map(&branches_for_stack/1)
-      |> List.flatten
+      |> List.flatten()
 
     group_nr = Macro.var(:group_nr, __MODULE__)
 
@@ -233,34 +281,37 @@ defmodule Makeup.Lexer.Groups do
 
     all_branches = branches ++ unmatched_token_branch ++ no_more_tokens_branch
 
-    expr = quote do
-      def unquote(name)(tokens, group_prefix \\ "group") do
-        unquote(name_helper)([], tokens, group_prefix, 0) |> :lists.flatten
-      end
+    expr =
+      quote do
+        def unquote(name)(tokens, group_prefix \\ "group") do
+          unquote(name_helper)([], tokens, group_prefix, 0) |> :lists.flatten()
+        end
 
-      defp unquote(name_helper)(stack, tokens, group_prefix, group_nr) do
-        {new_stack, new_group_nr, head_tokens, rest_of_tokens} =
-          case {stack, tokens} do
-            unquote(all_branches)
+        defp unquote(name_helper)(stack, tokens, group_prefix, group_nr) do
+          {new_stack, new_group_nr, head_tokens, rest_of_tokens} =
+            case {stack, tokens} do
+              unquote(all_branches)
+            end
+
+          case head_tokens do
+            [] ->
+              []
+
+            _ ->
+              # Don't worry about the nested list, we'll flatten it later
+              [
+                head_tokens
+                | unquote(name_helper)(new_stack, rest_of_tokens, group_prefix, new_group_nr)
+              ]
           end
-
-        case head_tokens do
-          [] ->
-            []
-
-          _ ->
-            # Don't worry about the nested list, we'll flatten it later
-            [head_tokens |
-              unquote(name_helper)(new_stack, rest_of_tokens, group_prefix, new_group_nr)]
         end
       end
-    end
 
     if Keyword.get(opts, :debug) do
       expr
-      |> Macro.to_string
-      |> Code.format_string!
-      |> IO.puts
+      |> Macro.to_string()
+      |> Code.format_string!()
+      |> IO.puts()
     end
 
     expr

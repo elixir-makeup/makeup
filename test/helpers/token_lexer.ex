@@ -1,4 +1,5 @@
 defmodule MakeupTest.Lexer.Fixtures.TokenLexer do
+  @moduledoc false
   import NimbleParsec
   import Makeup.Lexer.Combinators
   @behaviour Makeup.Lexer
@@ -23,18 +24,21 @@ defmodule MakeupTest.Lexer.Fixtures.TokenLexer do
       josé
     ])
 
-  root_combinator =
-    repeat(root_element_combinator)
+  root_combinator = repeat(root_element_combinator)
 
   # TODO: the @impl below raises a warning. Investigate why
   # @impl Makeup.Lexer
-  defparsec :root,
+  defparsec(
+    :root,
     root_combinator
+  )
 
   # TODO: the @impl below raises a warning. Investigate why
   # @impl Makeup.Lexer
-  defparsec :root_element,
+  defparsec(
+    :root_element,
     root_element_combinator
+  )
 
   @impl Makeup.Lexer
   def postprocess(tokens, _options \\ []), do: tokens
