@@ -56,8 +56,14 @@ defmodule Makeup do
         opts -> opts
       end
 
+    formatter_options =
+      case options[:formatter_options] do
+        nil -> []
+        opts -> opts
+      end
+
     tokens = apply(lexer, :lex, [source, lexer_options])
-    apply(HTMLFormatter, :format_inner_as_binary, [tokens])
+    apply(HTMLFormatter, :format_inner_as_binary, [tokens, formatter_options])
   end
 
   @doc """

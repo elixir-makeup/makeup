@@ -5,7 +5,7 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
 
   @group_highlight_js "lib/makeup/formatters/html/scripts/group_highlighter_javascript.js" |> File.read!
 
-  defp render_token(escaped_value, css_class, meta) do
+  defp render_token(escaped_value, css_class, highlight_tag, meta) do
     group_id = meta[:group_id]
     selectable = Map.get(meta, :selectable, [])
 
@@ -15,24 +15,27 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
     ]
 
     [
-      ~S(<span),
+      "<",
+      highlight_tag,
       ~S( class="),
       classes,
       ~S("),
       if group_id do [~S( data-group-id="), group_id, ~S(")] else [] end,
       ">",
       escaped_value,
-      ~S(</span>)
+      "</",
+      highlight_tag,
+      ">",
     ]
   end
 
   @doc """
   format a single token into an iolist
   """
-  def format_token({tag, meta, value}) do
+  def format_token({tag, meta, value}, highlight_tag) do
     escaped_value = escape(value)
     css_class = Makeup.Token.Utils.css_class_for_token_type(tag)
-    render_token(escaped_value, css_class, meta)
+    render_token(escaped_value, css_class, highlight_tag, meta)
   end
 
   defp escape_for(?&), do: "&amp;"
@@ -78,17 +81,18 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   Turns a list of tokens into an iolist which represents an HTML fragment.
   This fragment can be embedded directly into an HTML document.
   """
-  def format_inner_as_iolist(tokens) do
-    Enum.map(tokens, &format_token/1)
+  def format_inner_as_iolist(tokens, opts) do
+    highlight_tag = Keyword.get(opts, :highlight_tag, "span")
+    Enum.map(tokens, &format_token(&1, highlight_tag))
   end
 
   @doc """
   Turns a list of tokens into an HTML fragment.
   This fragment can be embedded directly into an HTML document.
   """
-  def format_inner_as_binary(tokens) do
+  def format_inner_as_binary(tokens, opts) do
     tokens
-    |> format_inner_as_iolist
+    |> format_inner_as_iolist(opts)
     |> IO.iodata_to_binary
   end
 
@@ -98,7 +102,7 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   """
   def format_as_iolist(tokens, opts \\ []) do
     css_class = Keyword.get(opts, :css_class, "highlight")
-    inner = format_inner_as_iolist(tokens)
+    inner = format_inner_as_iolist(tokens, opts)
 
     [
       ~S(<pre class="),
