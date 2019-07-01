@@ -5,7 +5,7 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
 
   @group_highlight_js "lib/makeup/formatters/html/scripts/group_highlighter_javascript.js" |> File.read!
 
-  defp render_token(escaped_value, css_class, highlight_tag, meta) do
+  defp render_token(escaped_value, css_class, meta, highlight_tag) do
     group_id = meta[:group_id]
     selectable = Map.get(meta, :selectable, [])
 
@@ -35,7 +35,7 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   def format_token({tag, meta, value}, highlight_tag) do
     escaped_value = escape(value)
     css_class = Makeup.Token.Utils.css_class_for_token_type(tag)
-    render_token(escaped_value, css_class, highlight_tag, meta)
+    render_token(escaped_value, css_class, meta, highlight_tag)
   end
 
   defp escape_for(?&), do: "&amp;"
