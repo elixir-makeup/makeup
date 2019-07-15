@@ -1,18 +1,11 @@
-RELEASE_TYPE: minor
+RELEASE_TYPE: major
 
-This release adds a new file extension registry for lexers.
-This means that it's now possible to lookup lexers by file extension.
-Since the previous release it was already possible to lookup lexers by language name.
-For example:
+Upgrade the HTML formatter so that you can use different kinds of tags around the tokens.
 
-```elixir
-elixir_lexer = Makeup.Registry.fetch_lexer_by_extension!("elixir")
-```
-
-Now you can also do this this:
+Previous versions always used the `<span>` tag (e.g. `<span class="n">name</span>`).
+You can now use other HTML tags using the `:highlight_tag` option:
 
 ```elixir
-elixir_lexer = Makeup.Registry.get_lexer_by_extension!("ex")
+alias Makeup.Formatters.HTML.HTMLFormatter
+HTMLFormatter.format_as_iolist(tokens, highlight_tag: "font")
 ```
-
-Documentation of the registry functionality was also improved.
