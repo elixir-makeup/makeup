@@ -1,0 +1,19 @@
+sudo: false
+language: elixir
+
+elixir: '1.9'
+otp_release: '22.0'
+
+stages:
+  - test
+
+jobs:
+  include:
+    - stage: test
+
+    - elixir: 1.6
+      otp_release: 20.3
+    - elixir: 1.9
+      otp_release: 20.3
+    - elixir: 1.9
+      otp_release: 21.3

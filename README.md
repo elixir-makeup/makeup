@@ -1,4 +1,5 @@
 # Makeup
+[![Build Status](https://travis-ci.org/tmbb/makeup.svg?branch=master)](https://travis-ci.org/tmbb/makeup)
 
 ## Introduction
 
