@@ -3,7 +3,7 @@ This document is meant to help people who want to contribute to Makeup.
 # The release script
 
 This project uses a release script to make it easy to publish a new release.
-The script perform a series of checks and executes a number of tasks.
+The script performs a series of checks and executes a number of tasks.
 
 The script was inspired by the continuous release philosophy of the python Hypothesis library.
 You can find a high-level description [here](https://hypothesis.works/articles/continuous-releases/).
@@ -20,7 +20,7 @@ Currently, the script does the following:
   4. Update the version
   5. Add the new version to the `mix.exs` file
   6. Add  anew entry to the CHANGELOG
-  7. Commit the chnages to git
+  7. Commit the changes to git
   8. Add a `vX.Y.Z` tag to the repo, so that it's easy to find each release
   9. Remove the `RELEASE.md` file, which must be written again for a new release
   10. Publish the package on hex.
@@ -119,12 +119,12 @@ The token format was inspired by the format of an elixir AST node.
     Some formatters can make use of the metadata in order to improve the output.
     The only metadata keys currently used by the HTML formatter are the `:group_id` and the `:unselectable` keys.
 
-    * `:group_id` is used to mark delimiters as belonging to the same group, so that they   are both highlighted when the user places the mouse cursor on top of one of them.
+    * `:group_id` is used to mark delimiters as belonging to the same group, so that they are both highlighted when the user places the mouse cursor on top of one of them.
 
     * `:unselectable` is used to mark a certain token as impossible to select in the HTML   output.
       It's useful for prompts in interactive interpreter sessions, which you usually don't want to copy and paste.
 
-  * The *third* element is an iolist (not exactly, see below) or a binary containing the    text that forms the token.
+  * The *third* element is an iolist (not exactly, see below) or a binary containing the text that forms the token.
     Makeup lexers should by default use iolists instead of binaries because they usually bring better performance.
 
 For example, the following are valid tokens:
@@ -155,22 +155,22 @@ When faced between the choice between being fast or being correct, you should be
 
 ## Writing a New Lexer
 
-Makeup lexers use the excellent [NimbleParsec](https://github.com/plataformatec/nimble_parsec) parsing library be default.
+Makeup lexers use the excellent [NimbleParsec](https://github.com/plataformatec/nimble_parsec) parsing library by default.
 Writing a NimbleParsec parser is not a requirement to write an Elixir lexer.
-As said above, a lexer is just a module that implements a the behaviour above.
+As said above, a lexer is just a module that implements the behavior above.
 
 You can write your lexer in any way you want.
 You may use a different parsing library, a custom tokenizer, or even something like Regexs.
 On the other hand, by doing so you won't be making use of the combinators defined by Makeup.
 
-Because a Lexer is just a module that implements a behaviour,
+Because a Lexer is just a module that implements a behavior,
 there is no need for your grammar rules to output the final token stream.
 You can process the token stream any way you want, as long as the format is the same.
 For example, the current Elixir lexer iterates over the identifiers
 in the token list to highlight some keywords such as `if`, `when` and `defmodule`.
 
 Makeup now provides an API to register lexers on application start.
-This means that you can dynamically add support for a new programming languages by just depending on a new lexer (as long as the application which is using Makeup knows how to get a lexer from the registry, of course).
+This means that you can dynamically add support for new programming languages by just depending on a new lexer (as long as the application which is using Makeup knows how to get a lexer from the registry, of course).
 
 The lexer has the responsibility to register itself on application start.
 
@@ -189,7 +189,7 @@ quite easy to implement for almost every language.
 <span  data-group-id='group-2'><b>end</b></span>
 </code></pre>
 
-### Aside: A Parser? Why not Regexes? The're simpler...
+### Aside: A Parser? Why not Regexes? They're simpler...
 
 Can't I just use a Regex-based lexer like normal people?
 
@@ -212,7 +212,7 @@ The hardest part is actually extracting the rules from the Regex-driven state ma
 # Formatter
 
 A formatter is an arbitrary module, which exports functions that perform arbitrary transformations on your list of tokens.
-The output formats are so different that it doesn't really make much sense for a formatter to implement a behaviour.
+The output formats are so different that it doesn't really make much sense for a formatter to implement a behavior.
 Some formatters should only output iolists, while others should only output binaries.
 Others might not produce any output.
 Think for example of a code formatter for a GUI application, which may work only by running function calls that statefully change the UI state.
@@ -269,7 +269,7 @@ It's probably not too hard to write a simple CSS parser and interpreter using Ni
 
 This document is a work in progress.
 Educating people so that they can contribute (especially new lexers) is a priority.
-A tool such as Makeup depends ond the work of many people, as no one is proficient
+A tool such as Makeup depends on the work of many people, as no one is proficient
 in all the programming languages Makeup might have to highlight.
 
 Also, at the moment, the options recognized by the lexers are not documented properly.
@@ -290,7 +290,6 @@ This is a virtuous cycle we must encourage.
 
 ---
 #### Supported Tokens <a id="supported-tokens"></a>
-[1]: \
 
 ```elixir
     :comment
