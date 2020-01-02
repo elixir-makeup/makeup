@@ -36,20 +36,20 @@ HTML5 used to be supported, but the newest version has removed it
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `makeup` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `makeup` and `makeup_elixir` (required
+for the ElixirLexer) to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:makeup, "x.y.z"}
+    {:makeup, "x.y.z"},
+    {:makeup_elixir, "x.y.z"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/makeup](https://hexdocs.pm/makeup).
+Documentation can be found at
+[https://hexdocs.pm/makeup](https://hexdocs.pm/makeup).
 
 The ExDocs are still pretty primitive.
 
