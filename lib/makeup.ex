@@ -24,7 +24,6 @@ defmodule Makeup do
       case options[:formatter] do
         nil -> HTMLFormatter
         module when is_atom(module) -> module
-        name -> Pickers.pick_lexer!(name)
       end
 
     tokens = apply(lexer, :lex, [source, lexer_options])
