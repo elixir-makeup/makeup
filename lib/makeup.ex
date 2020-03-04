@@ -9,7 +9,7 @@ defmodule Makeup do
   alias Makeup.Lexers.ElixirLexer
   alias Makeup.Styles.HTML.StyleMap
   alias Makeup.Styles.HTML.Style
-  alias Makeup.Pickers
+  alias Makeup.Registry
   require StyleMap
 
   @doc """
@@ -18,18 +18,7 @@ defmodule Makeup do
   By default it highlight the Elixir language using HTML
   """
   def highlight(source, options \\ []) do
-    lexer =
-      case options[:lexer] do
-        nil -> ElixirLexer
-        module when is_atom(module) -> module
-        name -> Pickers.pick_lexer!(name)
-      end
-
-    lexer_options =
-      case options[:lexer_options] do
-        nil -> []
-        opts -> opts
-      end
+    {lexer, lexer_options} = fetch_lexer(options)
 
     formatter =
       case options[:formatter] do
@@ -43,27 +32,22 @@ defmodule Makeup do
   end
 
   def highlight_inner_html(source, options \\ []) do
-    lexer =
-      case options[:lexer] do
-        nil -> ElixirLexer
-        module when is_atom(module) -> module
-        name -> Pickers.pick_lexer!(name)
-      end
-
-    lexer_options =
-      case options[:lexer_options] do
-        nil -> []
-        opts -> opts
-      end
-
-    formatter_options =
-      case options[:formatter_options] do
-        nil -> []
-        opts -> opts
-      end
+    {lexer, lexer_options} = fetch_lexer(options)
+    formatter_options = Keyword.get(options, :formatter_options, [])
 
     tokens = apply(lexer, :lex, [source, lexer_options])
     apply(HTMLFormatter, :format_inner_as_binary, [tokens, formatter_options])
+  end
+
+  defp fetch_lexer(options) do
+    {lexer, lexer_options} =
+      case options[:lexer] do
+        nil -> {ElixirLexer, []}
+        module when is_atom(module) -> {module, []}
+        name -> Registry.fetch_lexer_by_name!(name)
+      end
+
+    {lexer, Keyword.merge(lexer_options, Keyword.get(options, :lexer_options, []))}
   end
 
   @doc """

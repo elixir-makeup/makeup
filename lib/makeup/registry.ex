@@ -43,8 +43,8 @@ defmodule Makeup.Registry do
       alias Makeup.Lexers.ElixirLexer
       alias Makeup.Registry
 
-      Registry.register_lexer_with_name("elixir"), {ElixirLexer, []})
-      Registry.register_lexer_with_name("iex"), {ElixirLexer, []})
+      Registry.register_lexer_with_name("elixir", {ElixirLexer, []})
+      Registry.register_lexer_with_name("iex", {ElixirLexer, []})
   """
   def register_lexer_with_name(name, {lexer, options}) when is_binary(name) do
     old_registry = get_name_registry()
