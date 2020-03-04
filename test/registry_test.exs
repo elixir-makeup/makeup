@@ -56,7 +56,7 @@ defmodule Makeup.RegistryTest do
   end
 
   describe "register lexer using the high level API" do
-    setup "register and fetch a lexer" do
+    test "register and fetch a lexer" do
       Registry.register_lexer(MadLexer,
         options: [opt1: "a", opt2: "b"],
         names: ["mad_lexer1", "mad_lexer2"],
@@ -64,29 +64,30 @@ defmodule Makeup.RegistryTest do
       )
 
       # Fetching by name
-      assert assert {:ok, {CrazierLexer, [opt1: "a", opt2: "b"]}} ==
-                      Registry.fetch_lexer_by_extension("mad_lexer1")
+      assert {:ok, {MadLexer, [opt1: "a", opt2: "b"]}} ==
+                      Registry.fetch_lexer_by_name("mad_lexer1")
 
-      assert assert {:ok, {CrazierLexer, [opt1: "a", opt2: "b"]}} ==
-                      Registry.fetch_lexer_by_extension("mad_lexer2")
+      assert {:ok, {MadLexer, [opt1: "a", opt2: "b"]}} ==
+                      Registry.fetch_lexer_by_name("mad_lexer2")
 
-      assert {CrazierLexer, [opt1: "a", opt2: "b"]} = Registry.fetch_lexer_by_name!("mad_lexer1")
-      assert {CrazierLexer, [opt1: "a", opt2: "b"]} = Registry.fetch_lexer_by_name!("mad_lexer2")
+      assert {MadLexer, [opt1: "a", opt2: "b"]} = Registry.fetch_lexer_by_name!("mad_lexer1")
+      assert {MadLexer, [opt1: "a", opt2: "b"]} = Registry.fetch_lexer_by_name!("mad_lexer2")
 
-      assert {CrazierLexer, [opt1: "a", opt2: "b"]} = Registry.get_lexer_by_name("mad_lexer1")
-      assert {CrazierLexer, [opt1: "a", opt2: "b"]} = Registry.get_lexer_by_name("mad_lexer2")
+      assert {MadLexer, [opt1: "a", opt2: "b"]} = Registry.get_lexer_by_name("mad_lexer1")
+      assert {MadLexer, [opt1: "a", opt2: "b"]} = Registry.get_lexer_by_name("mad_lexer2")
+
       # Fetching by extension
-      assert assert {:ok, {CrazierLexer, [opt1: "a", opt2: "b"]}} ==
+      assert {:ok, {MadLexer, [opt1: "a", opt2: "b"]}} ==
                       Registry.fetch_lexer_by_extension("ml1")
 
-      assert assert {:ok, {CrazierLexer, [opt1: "a", opt2: "b"]}} ==
+      assert {:ok, {MadLexer, [opt1: "a", opt2: "b"]}} ==
                       Registry.fetch_lexer_by_extension("ml2")
 
-      assert {CrazierLexer, [opt1: "a", opt2: "b"]} = Registry.fetch_lexer_by_extension!("ml1")
-      assert {CrazierLexer, [opt1: "a", opt2: "b"]} = Registry.fetch_lexer_by_extension!("ml2")
+      assert {MadLexer, [opt1: "a", opt2: "b"]} = Registry.fetch_lexer_by_extension!("ml1")
+      assert {MadLexer, [opt1: "a", opt2: "b"]} = Registry.fetch_lexer_by_extension!("ml2")
 
-      assert {CrazierLexer, [opt1: "a", opt2: "b"]} = Registry.get_lexer_by_extension!("ml1")
-      assert {CrazierLexer, [opt1: "a", opt2: "b"]} = Registry.get_lexer_by_extension!("ml2")
+      assert {MadLexer, [opt1: "a", opt2: "b"]} = Registry.get_lexer_by_extension("ml1")
+      assert {MadLexer, [opt1: "a", opt2: "b"]} = Registry.get_lexer_by_extension("ml2")
     end
   end
 end
