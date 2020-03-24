@@ -2,6 +2,11 @@
 
 <!-- %% CHANGELOG_ENTRIES %% -->
 
+### 1.0.1 - 2020-03-24 14:42:31
+
+Remove warnings on recent Elixir versions.
+
+
 ### 1.0.0 - 2019-07-15 22:27:07
 
 Upgrade the HTML formatter so that you can use different kinds of tags around the tokens.
