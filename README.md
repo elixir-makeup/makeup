@@ -105,7 +105,7 @@ TODO
 ## Documentation on how to write a new lexer
 
 Contributions are highly appreciated.
-The mos direct way you can contribute to Makeup is by writing a new lexer.
+The most direct way you can contribute to Makeup is by writing a new lexer.
 You can find some information here: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## LICENSE
