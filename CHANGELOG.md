@@ -2,6 +2,11 @@
 
 <!-- %% CHANGELOG_ENTRIES %% -->
 
+### 1.0.2 - 2020-05-28 09:19:10
+
+Update NimbleParsec dependency.
+
+
 ### 1.0.1 - 2020-03-24 14:42:31
 
 Remove warnings on recent Elixir versions.
