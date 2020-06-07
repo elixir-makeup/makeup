@@ -208,7 +208,7 @@ defmodule Makeup.Registry do
   end
 
   # ----------------------------------------------------------------------------
-  # Private helper funuctions
+  # Private helper functions
   # ----------------------------------------------------------------------------
 
   defp get_name_registry() do

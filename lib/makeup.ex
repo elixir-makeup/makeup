@@ -2,8 +2,8 @@ defmodule Makeup do
   @moduledoc """
   Syntax highlighting library for code, inspired by Pygments.
 
-  By default, it doesn't include any lexers.
-  You must import them separately (even the Elixir lexer).
+  By default, it doesn't include any lexers. You must import
+  them separately (even the Elixir lexer).
   """
   alias Makeup.Formatters.HTML.HTMLFormatter
   alias Makeup.Lexers.ElixirLexer
@@ -52,17 +52,26 @@ defmodule Makeup do
   @doc """
   Generates a CSS stylesheet for highlighted code for the given style.
 
-  The `css_class` arguments is the top level class for highlighted code.
-  For example, if the `css_class` is `"highlight"` (the default), the stylesheet
-  has the form:
+  It expects a `style`, either as an atom name or as `StyleMap`, and the
+  `css_class` as the top level class for highlighted code.
+
+  Ff the `css_class` is `"highlight"` (the default), the stylesheet has
+  the form:
 
   ```css
   .highlight .someclass {...}
   .highlight .anotherclass {...}
   ```
-  ...
+
+  See `Makeup.Styles.HTML.StyleMap` for all style maps.
   """
-  def stylesheet(style \\ StyleMap.default_style(), css_class \\ "highlight") do
+  def stylesheet(style \\ StyleMap.default_style(), css_class \\ "highlight")
+
+  def stylesheet(style, css_class) when is_atom(style) do
+    stylesheet(apply(StyleMap, style, []), css_class)
+  end
+
+  def stylesheet(style, css_class) do
     Style.stylesheet(style, css_class)
   end
 end

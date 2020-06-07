@@ -1,4 +1,3 @@
-
 defmodule Makeup.Styles.HTML.TangoStyle do
   @moduledoc false
 
