@@ -1,3 +1,3 @@
 RELEASE_TYPE: patch
 
-Update NimbleParsec dependency.
+Allow styles to be given as atoms when generating stylesheets.
