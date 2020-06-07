@@ -42,8 +42,7 @@ defmodule Makeup.Mixfile do
 
   defp aliases do
     [
-      docs: &build_docs/1,
-      release: "run scripts/release.exs"
+      docs: &build_docs/1
     ]
   end
 
