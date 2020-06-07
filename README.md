@@ -28,11 +28,7 @@ the Friendly style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#frie
 
 ## Supported Languages
 
-Currently, the only supported source language is
-[Elixir](https://tmbb.github.io/makeup_demo/elixir.html).
-
-HTML5 used to be supported, but the newest version has removed it
-(because the old lexer is no longer backward compatible with the new version)
+Currently, the only supported source languages are [Elixir](https://github.com/tmbb/makeup_elixir) and [Erlang](https://github.com/tmbb/makeup_erlang).
 
 ## Installation
 
@@ -48,10 +44,7 @@ def deps do
 end
 ```
 
-Documentation can be found at
-[https://hexdocs.pm/makeup](https://hexdocs.pm/makeup).
-
-The ExDocs are still pretty primitive.
+Documentation can be found at [https://hexdocs.pm/makeup](https://hexdocs.pm/makeup).
 
 ## Changes
 
@@ -92,15 +85,9 @@ Using a PEG parser we can define the grammar in a more natural way.
 
 ## Disadvantages over Pygments
 
-It supports only a single language (yet, contributions are welcome!).
+It supports fewer languages.
 
-The lexers are written using the excellent [NimbleParsec](https://github.com/plataformatec/nimble_parsec) parser.
-
-Older version used the ExSpirit parser, which was more flexible but slower (about 10x slower) and a little less easy to use.
-
-## Benchmarks
-
-TODO
+The lexers are written using the excellent [NimbleParsec](https://github.com/dashbit/nimble_parsec) parser.
 
 ## Documentation on how to write a new lexer
 
