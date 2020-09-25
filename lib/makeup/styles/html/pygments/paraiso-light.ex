@@ -49,6 +49,6 @@ defmodule Makeup.Styles.HTML.ParaisoLightStyle do
       styles: @styles)
 
   def style() do
-    @style_struct()
+    @style_struct
   end
 end

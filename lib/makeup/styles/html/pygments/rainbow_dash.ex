@@ -51,6 +51,6 @@ defmodule Makeup.Styles.HTML.RainbowDashStyle do
       styles: @styles)
 
   def style() do
-    @style_struct()
+    @style_struct
   end
 end

@@ -54,6 +54,6 @@ defmodule Makeup.Styles.HTML.DefaultStyle do
       styles: @styles)
 
   def style() do
-    @style_struct()
+    @style_struct
   end
 end

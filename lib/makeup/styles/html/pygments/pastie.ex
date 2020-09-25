@@ -56,6 +56,6 @@ defmodule Makeup.Styles.HTML.PastieStyle do
       styles: @styles)
 
   def style() do
-    @style_struct()
+    @style_struct
   end
 end

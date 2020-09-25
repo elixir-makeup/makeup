@@ -63,6 +63,6 @@ defmodule Makeup.Styles.HTML.ColorfulStyle do
       styles: @styles)
 
   def style() do
-    @style_struct()
+    @style_struct
   end
 end

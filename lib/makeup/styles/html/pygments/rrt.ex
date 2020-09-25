@@ -24,6 +24,6 @@ defmodule Makeup.Styles.HTML.RrtStyle do
       styles: @styles)
 
   def style() do
-    @style_struct()
+    @style_struct
   end
 end

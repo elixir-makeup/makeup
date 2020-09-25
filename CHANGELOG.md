@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.0.4 - 2020-09-25
+
+Fix warnings and update NimbleParsec dependency.
+
+
 ### 1.0.3 - 2020-06-07
 
 Allow styles to be given as atoms when generating stylesheets.

@@ -31,6 +31,6 @@ defmodule Makeup.Styles.HTML.Algol_NuStyle do
       styles: @styles)
 
   def style() do
-    @style_struct()
+    @style_struct
   end
 end

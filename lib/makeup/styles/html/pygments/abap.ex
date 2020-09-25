@@ -24,6 +24,6 @@ defmodule Makeup.Styles.HTML.AbapStyle do
       styles: @styles)
 
   def style() do
-    @style_struct()
+    @style_struct
   end
 end
