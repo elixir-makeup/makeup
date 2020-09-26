@@ -19,16 +19,22 @@ It has **lexers**, **formatters** and **styles**.
 To see a sample of Makeup's output, go check the [demo](https://tmbb.github.io/makeup_demo/).
 Please note that not all styles define all differences between tokens.
 In a given style, strings and characters might be rendered in the same color while in others , the colors might be different.
+
 That is style-dependent.
+
 Some of the richer styles are
 the Tango style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#tango)),
 the Colorful style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#colorful)),
-the Default style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#default)) and
+the Default style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#default)), and
 the Friendly style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#friendly)).
 
 ## Supported Languages
 
-Currently, the only supported source languages are [Elixir](https://github.com/tmbb/makeup_elixir) and [Erlang](https://github.com/tmbb/makeup_erlang).
+The supported source languages are:
+
+  * [Elixir](https://github.com/tmbb/makeup_elixir)
+  * [Erlang](https://github.com/tmbb/makeup_erlang)
+  * [C](https://github.com/boydm/makeup_c)
 
 ## Installation
 
@@ -91,9 +97,7 @@ The lexers are written using the excellent [NimbleParsec](https://github.com/das
 
 ## Documentation on how to write a new lexer
 
-Contributions are highly appreciated.
-The mos direct way you can contribute to Makeup is by writing a new lexer.
-You can find some information here: [CONTRIBUTING.md](CONTRIBUTING.md)
+Contributions are highly appreciated. The most direct way you can contribute to Makeup is by writing a new lexer. You can find some information here: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## LICENSE
 
