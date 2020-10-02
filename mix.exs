@@ -1,7 +1,7 @@
 defmodule Makeup.Mixfile do
   use Mix.Project
 
-  @version "1.0.4"
+  @version "1.0.5"
   @url "https://github.com/tmbb/makeup"
 
   def project do
