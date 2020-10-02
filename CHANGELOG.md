@@ -1,5 +1,42 @@
 # Changelog
 
+### 1.0.5 - 2020-10-02
+
+#### Bugfix #1
+
+Fix serious bug in the `Makeup.Lexer.Combinators.lexeme/1` when given a list of unicode characters.
+
+Before this fix, the following combinator:
+
+```
+import Makeup.Lexer.Combinators
+
+characters_lexeme =
+  utf8_char([])
+  |> utf8_char([])
+  |> lexeme()
+  |> token(:character_lexeme)
+```
+
+when given as input a string like `"àó"` would return the following invalid unicode:
+
+```
+[{:character_lexeme, %{}, <<225, 242>>}]
+```
+
+instead of
+
+```
+[{:character_lexeme, %{}, "áò"}]
+```
+
+This was caused by the use of `IO.iodata_to_binary/1` instead of (the slower) `to_string()`. This was a problem because `IO.iodata_to_binary/1` would put any byte in a binary instead of (correctly) encoding bytes > 128 as a unicode character. This is not a problem with `IO.iodata_to_binary/1` it's a problem with using that function when we want to encode characters as unicode strings.
+
+#### Bugfix #2
+
+Fixed an edge case in the HTML encoder in the formatter.
+
+
 ### 1.0.4 - 2020-09-25
 
 Fix warnings and update NimbleParsec dependency.

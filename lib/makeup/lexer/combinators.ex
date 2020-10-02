@@ -65,7 +65,7 @@ defmodule Makeup.Lexer.Combinators do
 
   @doc false
   def __lexeme__(_rest, args, context, _line, _offset) do
-    result = args |> List.wrap() |> :lists.reverse() |> IO.iodata_to_binary()
+    result = args |> List.wrap() |> :lists.reverse() |> to_string()
     {[result], context}
   end
 

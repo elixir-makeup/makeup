@@ -2,6 +2,6 @@
   "dialyxir": {:hex, :dialyxir, "0.5.1", "b331b091720fd93e878137add264bac4f644e1ddae07a70bf7062c7862c4b952", [:mix], [], "hexpm"},
   "earmark": {:hex, :earmark, "1.2.4", "99b637c62a4d65a20a9fb674b8cffb8baa771c04605a80c911c4418c69b75439", [:mix], [], "hexpm"},
   "ex_doc": {:hex, :ex_doc, "0.18.3", "f4b0e4a2ec6f333dccf761838a4b253d75e11f714b85ae271c9ae361367897b7", [:mix], [{:earmark, "~> 1.1", [hex: :earmark, repo: "hexpm", optional: false]}], "hexpm"},
-  "nimble_parsec": {:hex, :nimble_parsec, "1.0.0", "54840f7a89aa3443c9280056742c329259d02787ef1da651f8591706518ceec6", [:mix], [], "hexpm", "6611313377408b6f19d4eddb1a53a342c70e336a21e9d09c38a9230775f1150d"},
+  "nimble_parsec": {:hex, :nimble_parsec, "1.0.0", "54840f7a89aa3443c9280056742c329259d02787ef1da651f8591706518ceec6", [:mix], [], "hexpm"},
   "stream_data": {:hex, :stream_data, "0.4.2", "fa86b78c88ec4eaa482c0891350fcc23f19a79059a687760ddcf8680aac2799b", [:mix], [], "hexpm", "54d6bf6f1e5e27fbf4a7784a2bffbb993446d0efd079debca0f27bf859c0d1cf"},
 }

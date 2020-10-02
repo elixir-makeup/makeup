@@ -13,6 +13,13 @@ defmodule MakeupTest.Lexer.Fixtures.TokenLexer do
   # unicode fun
   josé = token(string("josé"), :elixir_creator, %{country: "Poland"})
 
+  # parses a pair of characters and turns them into a binary using `lexeme/1`
+  characters_lexeme =
+    utf8_char([])
+    |> utf8_char([])
+    |> lexeme()
+    |> token(:character_lexeme)
+
   whitespace = ascii_string([?\s], min: 1)
 
   root_element_combinator =
@@ -21,7 +28,8 @@ defmodule MakeupTest.Lexer.Fixtures.TokenLexer do
       chris,
       grych,
       jose,
-      josé
+      josé,
+      characters_lexeme
     ])
 
   root_combinator = repeat(root_element_combinator)

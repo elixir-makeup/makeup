@@ -50,7 +50,7 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
 
   defp escape_for(c) when is_integer(c) and c <= 127, do: c
 
-  defp escape_for(c) when is_integer(c) and c > 128, do: << c :: utf8 >>
+  defp escape_for(c) when is_integer(c) and c >= 128, do: << c :: utf8 >>
 
   defp escape_for(string) when is_binary(string) do
     string

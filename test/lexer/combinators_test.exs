@@ -56,4 +56,10 @@ defmodule MakeupTest.Lexer.CombinatorsTest do
       end
     end
   end
+
+  test "unicode" do
+    assert TokenLexer.lex("áò") == [{:character_lexeme, %{}, "áò"}]
+    # A previous version had the following wrong output:
+    refute TokenLexer.lex("áò") == [{:character_lexeme, %{}, <<225, 242>>}]
+  end
 end
