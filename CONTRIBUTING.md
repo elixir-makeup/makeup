@@ -106,7 +106,7 @@ The *Lexer*, turns the raw source code into a flat list of tokens.
 A token has the following type:
 
 ```elixir
-{atom(), Map.t(), String.t()}
+{atom(), map(), String.t()}
 ```
 
 The token format was inspired by the format of an elixir AST node.
