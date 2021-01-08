@@ -12,12 +12,12 @@ defmodule Makeup.Lexer do
   @callback root_element(String.t) :: T.parsec_result
 
   @doc """
-  Parses the given string into a `parsec` result that inludes a list of tokens.
+  Parses the given string into a `parsec` result that includes a list of tokens.
   """
   @callback root(String.t) :: T.parsec_result
 
   @doc """
-  Postprocesses a list of tokens before matching the contained groups.
+  Post-processes a list of tokens before matching the contained groups.
   """
   @callback postprocess([T.token()], list()) :: [T.token()]
 
@@ -35,12 +35,12 @@ defmodule Makeup.Lexer do
   @doc """
   Merges the token values into the original string.
 
-  Inverts the ouput of a lexer. That is, if `lexer` is a lexer, then:
+  Inverts the output of a lexer. That is, if `lexer` is a lexer, then:
 
       string |> lexer.lex() |> Makeup.Lexer.unlex() == string
 
   This only works for a correctly implemented lexer, of course.
-  The above identity can be trated as a lexer invariant for newly implemented lexers.
+  The above identity can be treated as a lexer invariant for newly implemented lexers.
   """
   @spec unlex(list(T.token())) :: String.t()
   def unlex(tokens) do

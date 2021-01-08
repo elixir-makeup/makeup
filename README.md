@@ -1,5 +1,8 @@
 # Makeup
 
+[![Module Version](https://img.shields.io/hexpm/v/makeup.svg)](https://hex.pm/packages/makeup)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/makeup/)
+
 ## Introduction
 
 Makeup is a "generic syntax highlighter suitable for use in code hosting, forums, wikis or other applications that need to prettify source code" . This tagline was shamelessly stolen from the [Pygments website](http://pygments.org/).
@@ -7,7 +10,7 @@ Makeup is a "generic syntax highlighter suitable for use in code hosting, forums
 Pygments the major inspiration for this package, and the structure is basically the same.
 It has **lexers**, **formatters** and **styles**.
 
-* **Lexers** turn the source code into a list of tokens
+* **Lexers** turn the source code into a list of tokens.
 * **Formatters** turn the list of tokens into something else (HTML, TeX, images, etc.).
   Currently only an HTML formatter exists.
 * **Styles** customize the output of the formatter.

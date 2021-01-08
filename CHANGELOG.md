@@ -18,7 +18,7 @@ characters_lexeme =
   |> token(:character_lexeme)
 ```
 
-when given as input a string like `"àó"` would return the following invalid unicode:
+when given as input a string like `"àó"` would return the following invalid Unicode:
 
 ```
 [{:character_lexeme, %{}, <<225, 242>>}]
@@ -30,7 +30,7 @@ instead of
 [{:character_lexeme, %{}, "áò"}]
 ```
 
-This was caused by the use of `IO.iodata_to_binary/1` instead of (the slower) `to_string()`. This was a problem because `IO.iodata_to_binary/1` would put any byte in a binary instead of (correctly) encoding bytes > 128 as a unicode character. This is not a problem with `IO.iodata_to_binary/1` it's a problem with using that function when we want to encode characters as unicode strings.
+This was caused by the use of `IO.iodata_to_binary/1` instead of (the slower) `to_string()`. This was a problem because `IO.iodata_to_binary/1` would put any byte in a binary instead of (correctly) encoding bytes > 128 as a Unicode character. This is not a problem with `IO.iodata_to_binary/1` it's a problem with using that function when we want to encode characters as Unicode strings.
 
 #### Bugfix #2
 
@@ -95,7 +95,7 @@ Documentation of the registry functionality was also improved.
 Adds a register where lexer developers can register their lexers.
 This allows one to pick a lexer based on the language name.
 
-The goal is for Makeup to be aware of the avaliable lexers.
+The goal is for Makeup to be aware of the available lexers.
 In a project such as ExDoc this allows Makeup to support an unbounded number of languages just by declaring the lexer as a dependency.
 
 

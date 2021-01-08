@@ -1,6 +1,8 @@
+# Contributing
+
 This document is meant to help people who want to contribute to Makeup.
 
-# The release script
+## The release script
 
 This project uses a release script to make it easy to publish a new release.
 The script performs a series of checks and executes a number of tasks.
@@ -139,19 +141,19 @@ For example, the following are valid tokens:
 
 The above description of the third element of the token is a slight simplification.
 Erlang iolists can contain *binaries*, *lists* and *integers representing bytes*.
-They can't contain arbitrary integers that encode unicode characters.
+They can't contain arbitrary integers that encode Unicode characters.
 
-It's very inconvenient to handle these unicode characters inside the lexer,
+It's very inconvenient to handle these Unicode characters inside the lexer,
 so Makeup has chosen to handle them inside the *formatter*, which actually writes the "iolists" into an output device or a string.
 
-Because the *formatter* usually has to escape the token values anyway, it is natural to "escape" unicode characters at that level.
+Because the *formatter* usually has to escape the token values anyway, it is natural to "escape" Unicode characters at that level.
 The easiest way
 
 ## Improving an Existing Lexer
 
 There are probably lots of opportunities to profile the lexers and increase performance.
 Although performance is important, being correct is also important.
-When faced between the choice between being fast or being correct, you should be aware of the tradeoff.
+When faced between the choice between being fast or being correct, you should be aware of the trade-off.
 
 ## Writing a New Lexer
 
@@ -183,11 +185,14 @@ This makes it easy to visualize which part of the code is surrounded by the deli
 This is not a hard requirement for a new lexer, of course, but it's probably
 quite easy to implement for almost every language.
 
+```html
 <pre><code>
-<b>def</b> f<span data-group-id='group-1'>(</span>x<span  data-group-id='group-1'>)</span> <span  data-group-id='group-2'><b>do</b></span>
+<b>def</b> f<span data-group-id='group-1'>(</span>x<span  data-group-id='group-1'>)</span>
+<span  data-group-id='group-2'><b>do</b></span>
   x + 1
-<span  data-group-id='group-2'><b>end</b></span>
+<span data-group-id='group-2'><b>end</b></span>
 </code></pre>
+```
 
 ### Aside: A Parser? Why not Regexes? They're simpler...
 
@@ -235,7 +240,7 @@ The HTML formatter probably doesn't need many improvements.
 
 Some formatters that would be interesting to have:
 
-  * HTLM Formatter with inline CSS styles (the default one uses CSS classes)
+  * HTML Formatter with inline CSS styles (the default one uses CSS classes)
   * (La)TeX Formatter
   * Formatter suitable for use in terminals
 
