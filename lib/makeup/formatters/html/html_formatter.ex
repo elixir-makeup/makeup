@@ -1,6 +1,6 @@
 defmodule Makeup.Formatters.HTML.HTMLFormatter do
   @moduledoc """
-  A turn the list of tokens into a 
+  Turns a list of tokens into HTML fragments.
   """
 
   @group_highlight_js "lib/makeup/formatters/html/scripts/group_highlighter_javascript.js" |> File.read!
@@ -30,7 +30,7 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   end
 
   @doc """
-  format a single token into an iolist
+  Format a single token into an iolist.
   """
   def format_token({tag, meta, value}, highlight_tag) do
     escaped_value = escape(value)
@@ -131,7 +131,7 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   end
 
   @doc """
-  Return a Javascript snippet to highlight code on mouseover.
+  Return a JavaScript snippet to highlight code on mouseover.
   This is "raw" javascript, and for inclusion in an HTML file
   it must be wrapped in a `<script>` tag.
   """

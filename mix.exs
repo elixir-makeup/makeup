@@ -17,13 +17,6 @@ defmodule Makeup.Mixfile do
       source_url: @url,
       homepage_url: @url,
       aliases: aliases(),
-      docs: [
-        # The main page in the docs
-        main: "readme",
-        extras: [
-          "README.md"
-        ]
-      ],
       # Package
       package: package(),
       description: description()
@@ -51,11 +44,14 @@ defmodule Makeup.Mixfile do
       name: :makeup,
       licenses: ["BSD"],
       maintainers: ["Tiago Barroso <tmbb@campus.ul.pt>"],
-      links: %{"GitHub" => @url}
+      links: %{
+        "Changelog" => "https://hexdocs.pm/makeup/changelog.html",
+        "Contributing" => "https://hexdocs.pm/makeup/contributing.html",
+        "GitHub" => @url
+      }
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:eex],
@@ -63,7 +59,6 @@ defmodule Makeup.Mixfile do
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:nimble_parsec, "~> 0.5 or ~> 1.0"},
@@ -80,7 +75,7 @@ defmodule Makeup.Mixfile do
     end
 
     args = ["Makeup", @version, Mix.Project.compile_path()]
-    opts = ~w[--main Makeup --source-ref v#{@version} --source-url #{@url}]
+    opts = ~w[--main Makeup --source-ref v#{@version} --source-url #{@url} --config .ex_doc.exs]
     System.cmd(ex_doc, args ++ opts)
     Mix.shell().info("Docs built successfully")
   end
