@@ -92,11 +92,12 @@ Most Pygments lexers use something like a state table that works based on regex 
 and uses the results of those matches to switch to another state.
 Using a PEG parser we can define the grammar in a more natural way.
 
+
+The lexers are written using the excellent [NimbleParsec](https://github.com/dashbitco/nimble_parsec) parser.
+
 ## Disadvantages over Pygments
 
 It supports fewer languages.
-
-The lexers are written using the excellent [NimbleParsec](https://github.com/dashbit/nimble_parsec) parser.
 
 ## Documentation on how to write a new lexer
 
