@@ -78,7 +78,7 @@ To generate a stylesheet:
 
 ```
 Makeup.stylesheet(style) # by default, the StyleMap.default style is used.
-# ... output ommited
+# ... output omitted
 ```
 
 ## Advantages over Pygments

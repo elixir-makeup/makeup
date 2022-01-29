@@ -187,7 +187,7 @@ defmodule Makeup.Lexer.Combinators do
 
     * `left` - left delimiter for the string. Can be a binary or a general combinator.
     * `right` - right delimiter for the string. Can be a binary or a general combinator
-    * `middle` - a list of parsers to run inside the strig which parse entities
+    * `middle` - a list of parsers to run inside the string which parse entities
       that aren't characters.
       The most common example are special characters and string interpolation
       for languages that support it like Elixir.
