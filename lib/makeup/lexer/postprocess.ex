@@ -17,7 +17,7 @@ defmodule Makeup.Lexer.Postprocess do
 
   You can also use pattern matching instead of the inverted map,
   and it will probably be faster, but always benchmark the alternatives before
-  commiting to an implementation.
+  committing to an implementation.
   """
   def invert_word_map(pairs) do
     nested =

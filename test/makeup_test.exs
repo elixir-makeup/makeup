@@ -28,12 +28,12 @@ defmodule MakeupTest do
   end
 
   describe "highlight_inner_html" do
-    test "hightlight using default tag <span>" do
+    test "highlight using default tag <span>" do
       assert Makeup.highlight_inner_html("CompiledWithDocs.example", lexer: FakeLexer) ==
                ~S(<span class="nc">CompiledWithDocs</span><span class="o">.</span><span class="n">example</span>)
     end
 
-    test "hightlight using custom tag <samp>" do
+    test "highlight using custom tag <samp>" do
       formatter_options = [highlight_tag: "samp"]
       options = [lexer: FakeLexer, formatter_options: formatter_options]
 

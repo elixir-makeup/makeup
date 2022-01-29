@@ -14,7 +14,7 @@ defmodule Makeup.Styles.HTML do
       # Handles insheritance between styles.
       # This is automatic in Pygments' design, because they use class inheritance for tokens.
       # We don't have class inheritance in elixir, so we must have something else.
-      # Here, we use a manually build hierachy to fake inheritance.
+      # Here, we use a manually build hierarchy to fake inheritance.
       #
       # In any case, the goal is to have flat tokens at runtime.
       # This function is only called at compile time.

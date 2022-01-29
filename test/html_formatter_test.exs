@@ -3,7 +3,7 @@ defmodule MakeupTest.Lexer.HTMLFormatterTest do
   import ExUnitProperties
   alias Makeup.Formatters.HTML.HTMLFormatter
 
-  test "edge case - charcter with value = 128" do
+  test "edge case - character with value = 128" do
     # Handles an edge case in the HTML formatter (already fixed),
     # in which the case c == 128 wasn't handled.
     # The previous version would raise an error.
