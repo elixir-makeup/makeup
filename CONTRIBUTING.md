@@ -7,7 +7,7 @@ This document is meant to help people who want to contribute to Makeup.
 This project uses a release script to make it easy to publish a new release.
 The script performs a series of checks and executes a number of tasks.
 
-The script was inspired by the continuous release philosophy of the python Hypothesis library.
+The script was inspired by the continuous release philosophy of the Python Hypothesis library.
 You can find a high-level description [here](https://hypothesis.works/articles/continuous-releases/).
 There are many differences though.
 The main one is that this release script acts purely locally, and must be explicitly invoked,
@@ -16,21 +16,21 @@ while the one in hypothesis is a commit hook that runs on a continuous integrati
 Currently, the script does the following:
 
   1. Run the tests (abort the release if any tests fail)
-  2. Get the current version from the `mix.exs` file.
+  2. Get the current version from the `mix.exs` file
   3. Read a special `RELEASE.md` file to extract the release type (major, minor or patch)
-     and the text to add as a new entry in the CHANGELOG.
+     and the text to add as a new entry in the CHANGELOG
   4. Update the version
   5. Add the new version to the `mix.exs` file
-  6. Add  anew entry to the CHANGELOG
-  7. Commit the changes to git
+  6. Add a new entry to the CHANGELOG
+  7. Commit the changes to Git
   8. Add a `vX.Y.Z` tag to the repo, so that it's easy to find each release
   9. Remove the `RELEASE.md` file, which must be written again for a new release
-  10. Publish the package on hex.
+  10. Publish the package on Hex.pm
 
 It decreases the number of mistakes and the amount of commands you need to run.
 
 The path to the script is `scripts/release.exs`.
-The `mix.exs` file defines an alias so that you can run the script `mix release`
+The `mix.exs` file defines an alias so that you can run the script `mix release`.
 
 ## Special files
 
@@ -68,7 +68,7 @@ The previous sentence is only the first of probably many puns about makeup.
 Makeup takes as argument a string representing source code,
 and returns some data that contains the highlighted source code.
 
-Currently, Makeup only supports HTML output (actually HTML + CSS + a little Javascript).
+Currently, Makeup only supports HTML output (actually HTML + CSS + a little JavaScript).
 In the future it might support other kinds of output.
 
 It's made up of three parts:
@@ -111,7 +111,7 @@ A token has the following type:
 {atom(), map(), String.t()}
 ```
 
-The token format was inspired by the format of an elixir AST node.
+The token format was inspired by the format of an Elixir AST node.
 
   * The *first* element of the 3-tuple is the type of token.
     Makeup supports a limited number of token types.
@@ -123,7 +123,7 @@ The token format was inspired by the format of an elixir AST node.
 
     * `:group_id` is used to mark delimiters as belonging to the same group, so that they are both highlighted when the user places the mouse cursor on top of one of them.
 
-    * `:unselectable` is used to mark a certain token as impossible to select in the HTML   output.
+    * `:unselectable` is used to mark a certain token as impossible to select in the HTML output.
       It's useful for prompts in interactive interpreter sessions, which you usually don't want to copy and paste.
 
   * The *third* element is an iolist (not exactly, see below) or a binary containing the text that forms the token.
@@ -147,13 +147,12 @@ It's very inconvenient to handle these Unicode characters inside the lexer,
 so Makeup has chosen to handle them inside the *formatter*, which actually writes the "iolists" into an output device or a string.
 
 Because the *formatter* usually has to escape the token values anyway, it is natural to "escape" Unicode characters at that level.
-The easiest way
 
 ## Improving an Existing Lexer
 
 There are probably lots of opportunities to profile the lexers and increase performance.
 Although performance is important, being correct is also important.
-When faced between the choice between being fast or being correct, you should be aware of the trade-off.
+When faced with the choice between being fast or being correct, you should be aware of the trade-off.
 
 ## Writing a New Lexer
 
@@ -162,7 +161,7 @@ Writing a NimbleParsec parser is not a requirement to write an Elixir lexer.
 As said above, a lexer is just a module that implements the behavior above.
 
 You can write your lexer in any way you want.
-You may use a different parsing library, a custom tokenizer, or even something like Regexs.
+You may use a different parsing library, a custom tokenizer, or even something like Regex.
 On the other hand, by doing so you won't be making use of the combinators defined by Makeup.
 
 Because a Lexer is just a module that implements a behavior,
