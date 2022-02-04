@@ -69,7 +69,6 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   end
 
   defp escape(c) when is_integer(c) do
-    #
     [escape_for(c)]
   end
 
