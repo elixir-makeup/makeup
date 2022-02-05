@@ -73,4 +73,12 @@ defmodule MakeupTest.Lexer.HTMLFormatterTest do
         ~S[</code></pre>]
     end
   end
+
+  test "raise exception when token is not an iolist" do
+    msg = "Found `%{}` inside what should be an iolist"
+
+    assert_raise RuntimeError, msg, fn ->
+      assert HTMLFormatter.format_as_binary([{:string, %{}, %{}}])
+    end
+  end
 end
