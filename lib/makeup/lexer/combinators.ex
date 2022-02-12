@@ -38,35 +38,35 @@ defmodule Makeup.Lexer.Combinators do
   end
 
   @doc false
-  def __token__(_rest, [arg], context, _line, _offset, token_type) do
-    {[{token_type, %{}, arg}], context}
+  def __token__(rest, [arg], context, _line, _offset, token_type) do
+    {rest, [{token_type, %{}, arg}], context}
   end
 
-  def __token__(_rest, arg, context, _line, _offset, token_type) when is_binary(arg) do
-    {[{token_type, %{}, arg}], context}
+  def __token__(rest, arg, context, _line, _offset, token_type) when is_binary(arg) do
+    {rest, [{token_type, %{}, arg}], context}
   end
 
-  def __token__(_rest, args, context, _line, _offset, token_type) do
-    {[{token_type, %{}, args |> :lists.reverse()}], context}
-  end
-
-  @doc false
-  def __token__(_rest, [arg], context, _line, _offset, token_type, attrs) do
-    {[{token_type, attrs, arg}], context}
-  end
-
-  def __token__(_rest, arg, context, _line, _offset, token_type, attrs) when is_binary(arg) do
-    {[{token_type, attrs, arg}], context}
-  end
-
-  def __token__(_rest, args, context, _line, _offset, token_type, attrs) do
-    {[{token_type, attrs, args |> :lists.reverse()}], context}
+  def __token__(rest, args, context, _line, _offset, token_type) do
+    {rest, [{token_type, %{}, args |> :lists.reverse()}], context}
   end
 
   @doc false
-  def __lexeme__(_rest, args, context, _line, _offset) do
+  def __token__(rest, [arg], context, _line, _offset, token_type, attrs) do
+    {rest, [{token_type, attrs, arg}], context}
+  end
+
+  def __token__(rest, arg, context, _line, _offset, token_type, attrs) when is_binary(arg) do
+    {rest, [{token_type, attrs, arg}], context}
+  end
+
+  def __token__(rest, args, context, _line, _offset, token_type, attrs) do
+    {rest, [{token_type, attrs, args |> :lists.reverse()}], context}
+  end
+
+  @doc false
+  def __lexeme__(rest, args, context, _line, _offset) do
     result = args |> List.wrap() |> :lists.reverse() |> to_string()
-    {[result], context}
+    {rest, [result], context}
   end
 
   defp reverse_sort(items) do
@@ -159,9 +159,9 @@ defmodule Makeup.Lexer.Combinators do
   end
 
   @doc false
-  def collect_raw_chars_and_binaries(_rest, args, context, _line, _offset, ttype, attrs) do
+  def collect_raw_chars_and_binaries(rest, args, context, _line, _offset, ttype, attrs) do
     result = merge_chars_helper(ttype, attrs, [], args)
-    {result, context}
+    {rest, result, context}
   end
 
   defp merge_chars_helper(_ttype, _attrs, [], []), do: []
