@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.0 - 2022-02-12
+
+Require NimbleParsec `~> 1.2.2` onwards to prepare for future deprecations.
+
 ### 1.0.5 - 2020-10-02
 
 #### Bugfix #1

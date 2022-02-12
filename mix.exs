@@ -1,21 +1,17 @@
 defmodule Makeup.Mixfile do
   use Mix.Project
 
-  @version "1.0.5"
-  @url "https://github.com/tmbb/makeup"
+  @version "1.1.0"
+  @url "https://github.com/elixir-makeup/makeup"
 
   def project do
     [
       app: :makeup,
       version: @version,
-      elixir: "~> 1.4",
+      elixir: "~> 1.6",
       elixirc_paths: compiler_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      # Docs
-      name: "Makeup",
-      source_url: @url,
-      homepage_url: @url,
       aliases: aliases(),
       # Package
       package: package(),
