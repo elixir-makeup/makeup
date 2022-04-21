@@ -125,7 +125,13 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   @doc """
   Return the CSS stylesheet for a given style.
   """
-  def stylesheet(style, css_class \\ "highlight") do
+  def stylesheet(style \\ :default_style, css_class \\ "highlight")
+
+  def stylesheet(style, css_class) when is_atom(style) do
+    stylesheet(apply(Makeup.Styles.HTML.StyleMap, style, []), css_class)
+  end
+
+  def stylesheet(style, css_class) do
     Makeup.Styles.HTML.Style.stylesheet(style, css_class)
   end
 

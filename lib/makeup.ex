@@ -7,15 +7,13 @@ defmodule Makeup do
   """
   alias Makeup.Formatters.HTML.HTMLFormatter
   alias Makeup.Lexers.ElixirLexer
-  alias Makeup.Styles.HTML.StyleMap
-  alias Makeup.Styles.HTML.Style
   alias Makeup.Registry
-  require StyleMap
 
   @doc """
   Highlights the given string using the given lexer and formatter.
 
-  By default it highlight the Elixir language using HTML
+  By default it highlight the Elixir language using
+  `Makeup.Formatters.HTML.HTMLFormatter`.
   """
   def highlight(source, options \\ []) do
     {lexer, lexer_options} = fetch_lexer(options)
@@ -28,14 +26,6 @@ defmodule Makeup do
 
     tokens = apply(lexer, :lex, [source, lexer_options])
     apply(formatter, :format_as_binary, [tokens])
-  end
-
-  def highlight_inner_html(source, options \\ []) do
-    {lexer, lexer_options} = fetch_lexer(options)
-    formatter_options = Keyword.get(options, :formatter_options, [])
-
-    tokens = apply(lexer, :lex, [source, lexer_options])
-    apply(HTMLFormatter, :format_inner_as_binary, [tokens, formatter_options])
   end
 
   defp fetch_lexer(options) do
@@ -52,11 +42,11 @@ defmodule Makeup do
   @doc """
   Generates a CSS stylesheet for highlighted code for the given style.
 
-  It expects a `style`, either as an atom name or as `StyleMap`, and the
-  `css_class` as the top level class for highlighted code.
+  It expects a `style`, either as an atom name or as "style map",
+  and the `css_class` as the top level class for highlighted code.
 
-  Ff the `css_class` is `"highlight"` (the default), the stylesheet has
-  the form:
+  For example, if the `css_class` is `"highlight"` (the default), the stylesheet
+  has the form:
 
   ```css
   .highlight .someclass {...}
@@ -65,13 +55,7 @@ defmodule Makeup do
 
   See `Makeup.Styles.HTML.StyleMap` for all style maps.
   """
-  def stylesheet(style \\ StyleMap.default_style(), css_class \\ "highlight")
-
-  def stylesheet(style, css_class) when is_atom(style) do
-    stylesheet(apply(StyleMap, style, []), css_class)
-  end
-
-  def stylesheet(style, css_class) do
-    Style.stylesheet(style, css_class)
+  def stylesheet(style \\ :default_style, css_class \\ "highlight") do
+    HTMLFormatter.stylesheet(style, css_class)
   end
 end

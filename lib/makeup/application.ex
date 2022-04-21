@@ -1,4 +1,5 @@
 defmodule Makeup.Application do
+  @moduledoc false
   use Application
 
   alias Makeup.Registry
