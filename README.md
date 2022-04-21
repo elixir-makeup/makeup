@@ -19,17 +19,17 @@ It has **lexers**, **formatters** and **styles**.
 
 ## Demo
 
-To see a sample of Makeup's output, go check the [demo](https://tmbb.github.io/makeup_demo/).
+To see a sample of Makeup's output, go check the [demo](https://elixir-makeup.github.io/makeup_demo/).
 Please note that not all styles define all differences between tokens.
 In a given style, strings and characters might be rendered in the same color while in others , the colors might be different.
 
 That is style-dependent.
 
 Some of the richer styles are
-the Tango style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#tango)),
-the Colorful style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#colorful)),
-the Default style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#default)), and
-the Friendly style ([elixir](https://tmbb.github.io/makeup_demo/elixir.html#friendly)).
+the Tango style ([elixir](https://elixir-makeup.github.io/makeup_demo/elixir.html#tango)),
+the Colorful style ([elixir](https://elixir-makeup.github.io/makeup_demo/elixir.html#colorful)),
+the Default style ([elixir](https://elixir-makeup.github.io/makeup_demo/elixir.html#default)), and
+the Friendly style ([elixir](https://elixir-makeup.github.io/makeup_demo/elixir.html#friendly)).
 
 ## Supported Languages
 
