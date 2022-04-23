@@ -35,9 +35,13 @@ the Friendly style ([elixir](https://elixir-makeup.github.io/makeup_demo/elixir.
 
 The supported source languages are:
 
-  * [Elixir](https://github.com/tmbb/makeup_elixir)
-  * [Erlang](https://github.com/tmbb/makeup_erlang)
-  * [C](https://github.com/boydm/makeup_c)
+  * [Elixir](https://github.com/elixir-makeup/makeup_elixir)
+  * [Erlang](https://github.com/elixir-makeup/makeup_erlang)
+  * [C](https://github.com/elixir-makeup/makeup_c)
+  * [HTML](https://github.com/elixir-makeup/makeup_html)
+  * [Diff](https://github.com/elixir-makeup/makeup_diff)
+  * [JSON](https://github.com/elixir-makeup/makeup_json)
+  * [(H)EEx](https://github.com/elixir-makeup/makeup_eex)
 
 ## Installation
 
