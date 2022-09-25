@@ -25,7 +25,7 @@ defmodule Makeup do
       end
 
     tokens = apply(lexer, :lex, [source, lexer_options])
-    apply(formatter, :format_as_binary, [tokens])
+    apply(formatter, :format_as_binary, [tokens, options])
   end
 
   defp fetch_lexer(options) do
