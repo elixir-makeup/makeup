@@ -24,8 +24,9 @@ defmodule Makeup do
         module when is_atom(module) -> module
       end
 
+    formatter_options = Keyword.get(options, :formatter_options, [])
     tokens = apply(lexer, :lex, [source, lexer_options])
-    apply(formatter, :format_as_binary, [tokens])
+    apply(formatter, :format_as_binary, [tokens, formatter_options])
   end
 
   defp fetch_lexer(options) do
