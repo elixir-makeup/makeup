@@ -14,6 +14,15 @@ defmodule Makeup do
 
   By default it highlight the Elixir language using
   `Makeup.Formatters.HTML.HTMLFormatter`.
+
+  ## Options:
+
+  - `:lexer` - module name of the lexer to use (default: `Makeup.Lexers.ElixirLexer`)
+  - `:lexer_options` - list of options for the lexer
+  - `:formatter` - module name of the formatter to use (defult: `Makeup.Formatters.HTML.HTMLFormatter`)
+  - `:formatter_options` - list of options for the formatter. For the included HTMLFormatter, that's:
+    - `:css_class` - css class(es) of the main `<pre>` element (default: `"highlight"`)
+    - `:highlight_tag` - tag that wraps every token (default: `"span"`)
   """
   def highlight(source, options \\ []) do
     {lexer, lexer_options} = fetch_lexer(options)
@@ -24,8 +33,9 @@ defmodule Makeup do
         module when is_atom(module) -> module
       end
 
+    formatter_options = Keyword.get(options, :formatter_options, [])
     tokens = apply(lexer, :lex, [source, lexer_options])
-    apply(formatter, :format_as_binary, [tokens])
+    apply(formatter, :format_as_binary, [tokens, formatter_options])
   end
 
   defp fetch_lexer(options) do
