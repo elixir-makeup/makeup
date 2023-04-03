@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.0 - 2023-03-04
+
+Reduce module footprint.
+
 ### 1.1.0 - 2022-02-12
 
 Require NimbleParsec `~> 1.2.2` onwards to prepare for future deprecations.
