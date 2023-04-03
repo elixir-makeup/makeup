@@ -1,7 +1,7 @@
 defmodule Makeup.Mixfile do
   use Mix.Project
 
-  @version "1.1.0"
+  @version "1.1.1"
   @url "https://github.com/elixir-makeup/makeup"
 
   def project do
@@ -38,7 +38,7 @@ defmodule Makeup.Mixfile do
   defp package do
     [
       name: :makeup,
-      licenses: ["BSD"],
+      licenses: ["BSD-2-Clause"],
       maintainers: ["Tiago Barroso <tmbb@campus.ul.pt>"],
       links: %{
         "Changelog" => "https://hexdocs.pm/makeup/changelog.html",

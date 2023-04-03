@@ -34,8 +34,19 @@ defmodule Makeup do
       end
 
     formatter_options = Keyword.get(options, :formatter_options, [])
-    tokens = apply(lexer, :lex, [source, lexer_options])
-    apply(formatter, :format_as_binary, [tokens, formatter_options])
+    tokens = lexer.lex(source, lexer_options)
+    formatter.format_as_binary(tokens, formatter_options)
+  end
+
+  @doc """
+  Convenience for formatting as the inner bits of HTML.
+  """
+  def highlight_inner_html(source, options \\ []) do
+    {lexer, lexer_options} = fetch_lexer(options)
+    formatter_options = Keyword.get(options, :formatter_options, [])
+
+    tokens = lexer.lex(source, lexer_options)
+    HTMLFormatter.format_inner_as_binary(tokens, formatter_options)
   end
 
   defp fetch_lexer(options) do
