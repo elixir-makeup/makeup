@@ -92,22 +92,22 @@ defmodule Makeup.Lexer.Postprocess do
   Actually, you'll want to define some kind of helper to make it less verbose.
   For example:
 
-  ```elixir
-  defmodule MyTest do
-    use ExUnit.Case
-    alias Makeup.Lexers.ElixirLexer
-    alias Makeup.Lexer.Postprocess
+      defmodule MyTest do
+        use ExUnit.Case
+        alias Makeup.Lexers.ElixirLexer
+        alias Makeup.Lexer.Postprocess
 
-    def lex(text) do
-      text
-      |> ElixirLexer.lex(group_prefix: "group")
-      |> Postprocess.token_values_to_binaries()
-    end
+        def lex(text) do
+          text
+          |> ElixirLexer.lex(group_prefix: "group")
+          |> Postprocess.token_values_to_binaries()
+        end
 
-    test "even better with our little helper" do
-      assert lex(":atom") == [{:string_symbol, %{language: :elixir}, ":atom"}]
-    end
-  end
+        test "even better with our little helper" do
+          assert lex(":atom") == [{:string_symbol, %{language: :elixir}, ":atom"}]
+        end
+      end
+
   """
   def token_values_to_binaries(tokens) do
     Enum.map(tokens, &token_value_to_binary/1)
