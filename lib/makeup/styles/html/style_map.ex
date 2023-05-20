@@ -345,6 +345,34 @@ defmodule Makeup.Styles.HTML.StyleMap do
   """
   def default_style, do: @default_style
 
+  @dracula_style Style.make_style(
+    short_name: "dracula",
+    long_name: "Dracula Style",
+    background_color: "#282a36",
+    highlight_color: "#44475A",
+    styles: %{
+      :comment_single => "#44475A",
+      :keyword => "#FF92DF",
+      :keyword_declaration => "#FF92DF",
+      :keyword_namespace => "#FF92DF",
+      :name => "#50FA7B",
+      :name_attribute => "#BD93F9",
+      :name_builtin_pseudo => "#44475A",
+      :name_class => "#A4FFFF",
+      :name_constant => "#BD93F9",
+      :name_function => "#50FA7B",
+      :operator => "#FF92DF",
+      :punctuation => "#F8F8F2",
+      :string => "#F1FA8C",
+      :string_symbol => "#FFB86C",
+    }
+  )
+
+  @doc """
+    The *dracula* style. Example [here](https://elixir-makeup.github.io/makeup_demo/elixir.html#dracula).
+    """
+  def dracula_style, do: @dracula_style
+
   @emacs_style Style.make_style(
                  short_name: "emacs",
                  long_name: "Emacs Style",
