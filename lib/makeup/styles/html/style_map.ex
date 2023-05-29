@@ -369,8 +369,8 @@ defmodule Makeup.Styles.HTML.StyleMap do
   )
 
   @doc """
-    The *dracula* style. Example [here](https://elixir-makeup.github.io/makeup_demo/elixir.html#dracula).
-    """
+  The *dracula* style. Example [here](https://elixir-makeup.github.io/makeup_demo/elixir.html#dracula).
+  """
   def dracula_style, do: @dracula_style
 
   @emacs_style Style.make_style(
