@@ -15,7 +15,12 @@ defmodule Makeup.Mixfile do
       aliases: aliases(),
       # Package
       package: package(),
-      description: description()
+      description: description(),
+      # Dialyzer
+      dialyzer: [
+        plt_add_deps: :apps_direct,
+        plt_file: {:no_warn, "priv/plts/project.plt"}
+      ]
     ]
   end
 
@@ -58,7 +63,8 @@ defmodule Makeup.Mixfile do
   defp deps do
     [
       {:nimble_parsec, "~> 1.2.2 or ~> 1.3"},
-      {:stream_data, "~> 0.4.2", only: [:dev, :test]}
+      {:stream_data, "~> 0.4.2", only: [:dev, :test]},
+      {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false}
     ]
   end
 
