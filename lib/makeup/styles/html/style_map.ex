@@ -787,6 +787,42 @@ defmodule Makeup.Styles.HTML.StyleMap do
   """
   def native_style, do: @native_style
 
+  @one_dark_style Style.make_style(
+    short_name: "one_dark",
+    long_name: "One Dark Style",
+    background_color: "#282c34",
+    highlight_color: "#31353f",
+    styles: %{
+      :punctuation => "#ABB2BF",
+      :keyword => "#C678DD",
+      :keyword_constant => "#E5C07B",
+      :keyword_declaration => "#C678DD",
+      :keyword_namespace => "#C678DD",
+      :keyword_reserved => "#C678DD",
+      :keyword_type => "#E5C07B",
+      :name => "#C4CAD6",
+      :name_attribute => "#E06C75",
+      :name_builtin => "#E5C07B",
+      :name_class => "#E06C75",
+      :name_constant => "#61AFEF",
+      :name_function => "bold #61AFEF",
+      :name_function_magic => "bold #56B6C2",
+      :name_other => "#E06C75",
+      :name_tag => "#E06C75",
+      :name_decorator => "#61AFEF",
+      :string => "#98C379",
+      :string_symbol => "#61AFEF",
+      :number => "#D19A66",
+      :operator => "#56B6C2",
+      :comment => "#8C92A3"
+    }
+  )
+
+  @doc """
+  The *one_dark* style. Example [here](https://elixir-makeup.github.io/makeup_demo/elixir.html#one_dark).
+  """
+  def one_dark_style, do: @one_dark_style
+
   @paraiso_dark_style Style.make_style(
                         short_name: "paraiso_dark",
                         long_name: "ParaisoDark Style",
