@@ -67,9 +67,9 @@ defmodule Makeup.Lexer do
 
             all_but_last_line =
               parts
-              |> Enum.slice(0..-2)
+              |> Enum.drop(-1)
               |> Enum.map(fn tok_text -> [{ttype, meta, tok_text}] end)
-              |> :lists.reverse
+              |> :lists.reverse()
 
             last_line = [{ttype, meta, Enum.at(parts, -1)}]
 
