@@ -1,8 +1,13 @@
 # Changelog
 
-### 1.1.0 - 2023-03-04
+### 1.1.1 - 2023-11-08
 
-Reduce module footprint.
+Add dracula theme.
+
+Add one dark theme.
+
+Fix warnings on recent Elixir versions.
+
 
 ### 1.1.0 - 2022-02-12
 
