@@ -212,7 +212,7 @@ defmodule Makeup.Registry do
   # ----------------------------------------------------------------------------
 
   defp get_name_registry() do
-    Application.get_env(:makeup, @name_registry_key)
+    Application.compile_env(:makeup, @name_registry_key)
   end
 
   defp put_name_registry(registry) do
@@ -220,7 +220,7 @@ defmodule Makeup.Registry do
   end
 
   defp get_extension_registry() do
-    Application.get_env(:makeup, @extension_registry_key)
+    Application.compile_env(:makeup, @extension_registry_key)
   end
 
   defp put_extension_registry(registry) do
