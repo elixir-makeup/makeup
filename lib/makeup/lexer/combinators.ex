@@ -120,6 +120,9 @@ defmodule Makeup.Lexer.Combinators do
   Matches a given combinator, repeated 0 or more times, surrounded by left and right delimiters.
 
   Delimiters can be combinators or literal strings (either both combinators or both literal strings).
+
+  It also succeeds if we get to the end of string and the closing delimiter is missing,
+  to avoid parsing the program multiple times in case of mismatched delimeters or invalid programs.
   """
   def many_surrounded_by(combinator, left, right) when is_binary(left) and is_binary(right) do
     token(left, :punctuation)
@@ -129,7 +132,7 @@ defmodule Makeup.Lexer.Combinators do
         |> concat(combinator)
       )
     )
-    |> concat(token(right, :punctuation))
+    |> choice([token(right, :punctuation), eos()])
   end
 
   def many_surrounded_by(combinator, left, right) do
@@ -140,12 +143,15 @@ defmodule Makeup.Lexer.Combinators do
         |> concat(combinator)
       )
     )
-    |> concat(right)
+    |> choice([right, eos()])
   end
 
   @doc """
   Matches a given combinator, repeated 0 or more times, surrounded by left and right delimiters,
   and wraps the `right` and `left` delimiters into a token of the given `ttype`.
+
+  It also succeeds if we get to the end of string and the closing delimiter is missing,
+  to avoid parsing the program multiple times in case of mismatched delimeters or invalid programs.
   """
   def many_surrounded_by(combinator, left, right, ttype) do
     token(left, ttype)
@@ -155,7 +161,7 @@ defmodule Makeup.Lexer.Combinators do
         |> concat(combinator)
       )
     )
-    |> concat(token(right, ttype))
+    |> choice([token(right, ttype), eos()])
   end
 
   @doc false
