@@ -67,12 +67,13 @@ defmodule Makeup.Mixfile do
     ex_doc = Path.join(Mix.path_for(:escripts), "ex_doc")
 
     unless File.exists?(ex_doc) do
-      raise "cannot build docs because escript for ex_doc is not installed"
+      raise "cannot build docs because escript for ex_doc is not installed, run \"mix escript.install hex ex_doc\""
     end
 
+    paths = Path.join(Mix.Project.build_path(), "lib/*/ebin")
     args = ["Makeup", @version, Mix.Project.compile_path()]
     opts = ~w[--main Makeup --source-ref v#{@version} --source-url #{@url} --config .ex_doc.exs]
-    System.cmd(ex_doc, args ++ opts)
+    System.cmd(ex_doc, args ++ ["--paths", paths] ++ opts)
     Mix.shell().info("Docs built successfully")
   end
 end
