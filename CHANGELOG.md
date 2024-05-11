@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.2 - 2024-05-11
+
+Do not attempt reparsing if surrounded by reaches end of string.
+
 ### 1.1.1 - 2023-11-08
 
 Add dracula theme.
@@ -7,7 +11,6 @@ Add dracula theme.
 Add one dark theme.
 
 Fix warnings on recent Elixir versions.
-
 
 ### 1.1.0 - 2022-02-12
 
