@@ -57,8 +57,8 @@ defmodule Makeup.Mixfile do
 
   defp deps do
     [
-      {:nimble_parsec, "~> 1.2.2 or ~> 1.3"},
-      {:stream_data, "~> 0.4.2", only: [:dev, :test]}
+      {:nimble_parsec, "~> 1.4"},
+      {:stream_data, "~> 1.1", only: [:dev, :test]}
     ]
   end
 
