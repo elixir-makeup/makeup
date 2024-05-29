@@ -8,7 +8,7 @@ defmodule Makeup.Mixfile do
     [
       app: :makeup,
       version: @version,
-      elixir: "~> 1.6",
+      elixir: "~> 1.12",
       elixirc_paths: compiler_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
