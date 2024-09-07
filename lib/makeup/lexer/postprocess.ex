@@ -38,7 +38,7 @@ defmodule Makeup.Lexer.Postprocess do
   and some of the basic combinators output iolists, so there is no need
   to convert the token values into binaries.
 
-  This function should only be used for tesring purposes, when you might
+  This function should only be used for testing purposes, when you might
   want to compare the token list into a reference output.
 
   Converting the tokens into binaries has two advantges:
@@ -60,7 +60,7 @@ defmodule Makeup.Lexer.Postprocess do
   and some of the basic combinators output iolists, so there is no need
   to convert the token values into binaries.
 
-  This function should only be used for tesring purposes, when you might
+  This function should only be used for testing purposes, when you might
   want to compare the token list into a reference output.
 
   Converting the tokens into binaries has two advantges:
@@ -76,11 +76,11 @@ defmodule Makeup.Lexer.Postprocess do
     alias Makeup.Lexer.Postprocess
 
     test "binaries are much easier on the eyes" do
-      naive_tokens = ElixirLexer(":atom")
+      naive_tokens = ElixirLexer.lex(":atom")
       # Hard to inspect visually
-      assert naive_tokens == [{:string_symbol, %{language: :elixir}, [":", "a", "tom"]}]
+      assert naive_tokens == [{:string_symbol, %{language: :elixir}, [":", 97, 116, 111, 109]}]
       better_tokens =
-        text
+        ":atom"
         |> ElixirLexer.lex()
         |> Postprocess.token_values_to_binaries()
       # Easy to inspect visually
