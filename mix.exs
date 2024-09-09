@@ -8,7 +8,7 @@ defmodule Makeup.Mixfile do
     [
       app: :makeup,
       version: @version,
-      elixir: "~> 1.6",
+      elixir: "~> 1.12",
       elixirc_paths: compiler_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -57,8 +57,8 @@ defmodule Makeup.Mixfile do
 
   defp deps do
     [
-      {:nimble_parsec, "~> 1.2.2 or ~> 1.3"},
-      {:stream_data, "~> 0.4.2", only: [:dev, :test]}
+      {:nimble_parsec, "~> 1.4"},
+      {:stream_data, "~> 1.1", only: [:dev, :test]}
     ]
   end
 
