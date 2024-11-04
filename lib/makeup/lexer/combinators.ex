@@ -120,49 +120,48 @@ defmodule Makeup.Lexer.Combinators do
   Matches a given combinator, repeated 0 or more times, surrounded by left and right delimiters.
 
   Delimiters can be combinators or literal strings (either both combinators or both literal strings).
+  In case of literal strings, this function wraps the `right` and `left` delimiters
+  into a token of the `ttype` option (default: `:punctuation`).
 
   It also succeeds if we get to the end of string and the closing delimiter is missing,
   to avoid parsing the program multiple times in case of mismatched delimeters or invalid programs.
+  This behavior can be disabled by passing `eos: false` as option.
   """
-  def many_surrounded_by(combinator, left, right) when is_binary(left) and is_binary(right) do
-    token(left, :punctuation)
+  def many_surrounded_by(combinator, left, right, opts \\ [])
+
+  def many_surrounded_by(combinator, left, right, opts) when is_list(opts) do
+    ttype =
+      Keyword.get_lazy(opts, :ttype, fn ->
+        # when both left and right are literal strings, wrap them into a :punctuation token by default
+        if is_binary(left) and is_binary(right) do
+          :punctuation
+        else
+          nil
+        end
+      end)
+
+    eos = Keyword.get(opts, :eos, true)
+
+    maybe_wrap_token(left, ttype)
     |> concat(
       repeat(
         lookahead_not(string(right))
         |> concat(combinator)
       )
     )
-    |> choice([token(right, :punctuation), eos()])
+    |> maybe_concat_with_eos(maybe_wrap_token(right, ttype), eos)
   end
 
-  def many_surrounded_by(combinator, left, right) do
-    left
-    |> concat(
-      repeat(
-        lookahead_not(right)
-        |> concat(combinator)
-      )
-    )
-    |> choice([right, eos()])
-  end
-
-  @doc """
-  Matches a given combinator, repeated 0 or more times, surrounded by left and right delimiters,
-  and wraps the `right` and `left` delimiters into a token of the given `ttype`.
-
-  It also succeeds if we get to the end of string and the closing delimiter is missing,
-  to avoid parsing the program multiple times in case of mismatched delimeters or invalid programs.
-  """
+  # deprecate this? (use ttype option instead)
   def many_surrounded_by(combinator, left, right, ttype) do
-    token(left, ttype)
-    |> concat(
-      repeat(
-        lookahead_not(string(right))
-        |> concat(combinator)
-      )
-    )
-    |> choice([token(right, ttype), eos()])
+    many_surrounded_by(combinator, left, right, ttype: ttype)
   end
+
+  defp maybe_concat_with_eos(first, second, true), do: choice(first, [second, eos()])
+  defp maybe_concat_with_eos(first, second, false), do: concat(first, second)
+
+  defp maybe_wrap_token(token, nil), do: token
+  defp maybe_wrap_token(token, ttype), do: token(token, ttype)
 
   @doc false
   def collect_raw_chars_and_binaries(rest, args, context, _line, _offset, ttype, attrs) do
