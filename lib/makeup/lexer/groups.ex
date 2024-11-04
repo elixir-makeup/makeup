@@ -63,7 +63,7 @@ defmodule Makeup.Lexer.Groups do
     ttype_varnames = for i <- 1..n, do: String.to_atom("ttype__#{i}")
     attr_varnames = for i <- 1..n, do: String.to_atom("attr__#{i}")
     text_varnames = for i <- 1..n, do: String.to_atom("text__#{i}")
-    tokens_data = List.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
+    tokens_data = Enum.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
 
     pattern_matches =
       for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data do
@@ -79,7 +79,7 @@ defmodule Makeup.Lexer.Groups do
 
     tokens_pattern = make_match(pattern, token_varnames, :rest_of_tokens)
 
-    tokens_for_result = List.zip([ttype_varnames, attr_varnames, text_varnames])
+    tokens_for_result = Enum.zip([ttype_varnames, attr_varnames, text_varnames])
     head_tokens = put_group_ids(tokens_for_result, :group_id)
 
     quote do
@@ -107,7 +107,7 @@ defmodule Makeup.Lexer.Groups do
     ttype_varnames = for i <- 1..n, do: String.to_atom("ttype__#{i}")
     attr_varnames = for i <- 1..n, do: String.to_atom("attr__#{i}")
     text_varnames = for i <- 1..n, do: String.to_atom("text__#{i}")
-    tokens_data = List.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
+    tokens_data = Enum.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
 
     pattern_matches =
       for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data do
@@ -128,7 +128,7 @@ defmodule Makeup.Lexer.Groups do
 
     tokens_pattern = make_match(pattern, token_varnames, :rest_of_tokens)
 
-    tokens_for_result = List.zip([ttype_varnames, attr_varnames, text_varnames])
+    tokens_for_result = Enum.zip([ttype_varnames, attr_varnames, text_varnames])
     head_tokens = put_group_ids(tokens_for_result, :group_id)
 
     quote do
@@ -154,7 +154,7 @@ defmodule Makeup.Lexer.Groups do
     ttype_varnames = for i <- 1..n, do: String.to_atom("ttype__#{i}")
     attr_varnames = for i <- 1..n, do: String.to_atom("attr__#{i}")
     text_varnames = for i <- 1..n, do: String.to_atom("text__#{i}")
-    tokens_data = List.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
+    tokens_data = Enum.zip([token_varnames, ttype_varnames, attr_varnames, text_varnames])
 
     pattern_matches =
       for {token_varname, ttype_varname, attr_varname, text_varname} <- tokens_data do
@@ -175,7 +175,7 @@ defmodule Makeup.Lexer.Groups do
 
     tokens_pattern = make_match(pattern, token_varnames, :rest_of_tokens)
 
-    tokens_for_result = List.zip([ttype_varnames, attr_varnames, text_varnames])
+    tokens_for_result = Enum.zip([ttype_varnames, attr_varnames, text_varnames])
     head_tokens = put_group_ids(tokens_for_result, :group_id)
 
     quote do
