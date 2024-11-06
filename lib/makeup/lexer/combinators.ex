@@ -141,11 +141,12 @@ defmodule Makeup.Lexer.Combinators do
       end)
 
     eos = Keyword.get(opts, :eos, true)
+    lookahead_right = if is_binary(right), do: string(right), else: right
 
     maybe_wrap_token(left, ttype)
     |> concat(
       repeat(
-        lookahead_not(string(right))
+        lookahead_not(lookahead_right)
         |> concat(combinator)
       )
     )
