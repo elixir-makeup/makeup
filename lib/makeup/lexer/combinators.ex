@@ -152,7 +152,7 @@ defmodule Makeup.Lexer.Combinators do
     |> maybe_concat_with_eos(maybe_wrap_token(right, ttype), eos)
   end
 
-  # deprecate this? (use ttype option instead)
+  # TODO: deprecate this to use ttype option instead
   def many_surrounded_by(combinator, left, right, ttype) do
     many_surrounded_by(combinator, left, right, ttype: ttype)
   end
