@@ -6,26 +6,26 @@ defmodule MakeupTest.Lexer.CombinatorsTest do
   describe "tokens" do
     test "token with string literal" do
       assert TokenLexer.lex("chris") == [
-        {:phoenix_creator, %{}, "chris"}
-      ]
+               {:phoenix_creator, %{}, "chris"}
+             ]
     end
 
     test "token with string combinator" do
       assert TokenLexer.lex("grych") == [
-        {:drab_creator, %{}, "grych"}
-      ]
+               {:drab_creator, %{}, "grych"}
+             ]
     end
 
     test "token with attrs" do
       assert TokenLexer.lex("jose") == [
-        {:elixir_creator, %{country: "Brazil"}, "jose"}
-      ]
+               {:elixir_creator, %{country: "Brazil"}, "jose"}
+             ]
     end
 
     test "unicode fun" do
       assert TokenLexer.lex("josé") == [
-        {:elixir_creator, %{country: "Poland"}, "josé"}
-      ]
+               {:elixir_creator, %{country: "Poland"}, "josé"}
+             ]
     end
   end
 
@@ -61,5 +61,46 @@ defmodule MakeupTest.Lexer.CombinatorsTest do
     assert TokenLexer.lex("áò") == [{:character_lexeme, %{}, "áò"}]
     # A previous version had the following wrong output:
     refute TokenLexer.lex("áò") == [{:character_lexeme, %{}, <<225, 242>>}]
+  end
+
+  describe "many_surrounded_by" do
+    import NimbleParsec
+    import Makeup.Lexer.Combinators
+
+    defparsecp(:comment_tag, many_surrounded_by(utf8_char([]), "<!--", "-->"))
+
+    defparsecp(
+      :comment_tag_no_eos,
+      many_surrounded_by(utf8_char([]), "<!--", "-->", eos: false, ttype: :custom)
+    )
+
+    defparsecp(
+      :with_combinators,
+      many_surrounded_by(
+        utf8_char([]),
+        choice([string("{"), string("[")]),
+        choice([string("}"), string("]")])
+      )
+    )
+
+    test "includes eos by default" do
+      assert {:ok, [{:punctuation, %{}, "<!--"}, 104, 101, 108, 108, 111], "", %{}, {1, 0}, 9} =
+               comment_tag("<!--hello")
+
+      assert {:error, "expected string \"-->\"", "", %{}, {1, 0}, 9} =
+               comment_tag_no_eos("<!--hello")
+    end
+
+    test "can override ttype" do
+      assert {:ok, [{:custom, %{}, "<!--"}, 104, 101, 108, 108, 111, {:custom, %{}, "-->"}], "",
+              %{}, {1, 0},
+              12} =
+               comment_tag_no_eos("<!--hello-->")
+    end
+
+    test "left and right can be complex combinators" do
+      assert {:ok, ["[", 104, 101, 108, 108, 111, "}"], "", %{}, {1, 0}, 7} =
+               with_combinators("[hello}")
+    end
   end
 end
