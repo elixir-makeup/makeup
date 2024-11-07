@@ -1,7 +1,11 @@
 defmodule MakeupTest.Lexer.CombinatorsTest do
   use ExUnit.Case, async: true
+
   alias MakeupTest.Lexer.Fixtures.TokenLexer
   alias MakeupTest.Lexer.Fixtures.WordListLexer
+
+  import NimbleParsec
+  import Makeup.Lexer.Combinators
 
   describe "tokens" do
     test "token with string literal" do
@@ -63,10 +67,22 @@ defmodule MakeupTest.Lexer.CombinatorsTest do
     refute TokenLexer.lex("áò") == [{:character_lexeme, %{}, <<225, 242>>}]
   end
 
-  describe "many_surrounded_by" do
-    import NimbleParsec
-    import Makeup.Lexer.Combinators
+  describe "string_like" do
+    defparsecp(:sl_empty, string_like("--", "--", [], :comment))
+    defparsecp(:sl_not_empty, string_like("--", "--", [string("code")], :comment))
 
+    test "empty middle" do
+      assert {:ok, [{:comment, %{}, ["--", ?c, ?o, ?d, ?e, "--"]}], "", _, _, _} =
+               sl_empty("--code--")
+    end
+
+    test "non-empty middle" do
+      assert {:ok, [{:comment, %{}, ["--", ?!, "code", ?!, "--"]}], "", _, _, _} =
+               sl_not_empty("--!code!--")
+    end
+  end
+
+  describe "many_surrounded_by" do
     defparsecp(:comment_tag, many_surrounded_by(utf8_char([]), "<!--", "-->"))
 
     defparsecp(

@@ -232,10 +232,14 @@ defmodule Makeup.Lexer.Combinators do
         false -> right
       end
 
-    choices = middle ++ [utf8_char([])]
+    choices =
+      case middle do
+        [] -> utf8_char([])
+        _ -> choice(middle ++ [utf8_char([])])
+      end
 
     left_combinator
-    |> repeat(lookahead_not(right_combinator) |> choice(choices))
+    |> repeat(lookahead_not(right_combinator) |> concat(choices))
     |> concat(right_combinator)
     |> post_traverse({__MODULE__, :collect_raw_chars_and_binaries, [ttype, attrs]})
   end
