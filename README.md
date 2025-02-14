@@ -42,7 +42,7 @@ The supported source languages are:
   * [Diff](https://github.com/elixir-makeup/makeup_diff)
   * [JSON](https://github.com/elixir-makeup/makeup_json)
   * [(H)EEx](https://github.com/elixir-makeup/makeup_eex)
-  * [Many more languages](https://hexdocs.pm/makeup_syntect/MakeupSyntect.Syntaxes.html) through [`makeup_syntect`](https://github.com/SteffenDE/makeup_syntect)
+  * [Many more languages](https://hexdocs.pm/makeup_syntect/MakeupSyntect.Syntaxes.html) through [`makeup_syntect`](https://github.com/elixir-makeup/makeup_syntect)
 
 ## Installation
 
