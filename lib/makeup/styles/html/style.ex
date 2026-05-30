@@ -10,7 +10,6 @@ defmodule Makeup.Styles.HTML.Style do
             styles: []
 
   alias Makeup.Styles.HTML.TokenStyle
-  require Makeup.Token.Utils
   alias Makeup.Token.Utils
 
   defp handle_inheritance(style_map) do
