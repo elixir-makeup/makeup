@@ -74,6 +74,18 @@ defmodule MakeupTest.Lexer.HTMLFormatterTest do
     end
   end
 
+  test "group ids are encoded before being written to data attributes" do
+    html =
+      HTMLFormatter.format_as_binary([
+        {:punctuation, %{group_id: ~S[group-1" onmouseover="alert(1)]}, "("}
+      ])
+
+    assert html ==
+      ~S[<pre class="highlight"><code>] <>
+      ~S[<span class="p" data-group-id="group-1&quot; onmouseover=&quot;alert(1)">(</span>] <>
+      ~S[</code></pre>]
+  end
+
   test "raise exception when token is not an iolist" do
     msg = "Found `%{}` inside what should be an iolist"
 

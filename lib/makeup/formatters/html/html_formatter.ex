@@ -20,7 +20,7 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
       ~S( class="),
       classes,
       ~S("),
-      if group_id do [~S( data-group-id="), group_id, ~S(")] else [] end,
+      if group_id do [~S( data-group-id="), escape(group_id), ~S(")] else [] end,
       ">",
       escaped_value,
       "</",
