@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.2 - 2026-07-01
+
+Escape group ids when generating HTML.
+
 ### 1.2.1 - 2024-11-07
 
 Allow empty middle on string_like combinators.
