@@ -95,7 +95,7 @@ defmodule Makeup.Token.Utils do
 
   @precedence Hierarchy.hierarchy_to_precedence(@hierarchy)
   @token_to_class_map Hierarchy.style_to_class_map(@hierarchy)
-  @standard_token_types Map.keys(@token_to_class_map)
+  @standard_token_types @token_to_class_map |> Map.keys() |> Enum.sort()
 
   def precedence do
     @precedence
