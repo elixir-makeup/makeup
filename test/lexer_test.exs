@@ -20,6 +20,34 @@ defmodule MakeupTest.LexerTest do
     end
   end
 
+  describe "merge" do
+    test "merges adjacent tokens of the same type and attributes" do
+      tokens = [{:a, %{}, "ab"}, {:a, %{}, "cd"}, {:b, %{}, "ef"}]
+
+      assert [{:a, %{}, value}, {:b, %{}, "ef"}] = Lexer.merge(tokens)
+      assert IO.iodata_to_binary(value) == "abcd"
+    end
+
+    test "does not merge tokens with different attributes" do
+      tokens = [{:a, %{x: 1}, "ab"}, {:a, %{x: 2}, "cd"}]
+
+      assert Lexer.merge(tokens) == tokens
+    end
+
+    test "merges iodata token values" do
+      tokens = [{:a, %{}, ["a", "b"]}, {:a, %{}, "cd"}]
+
+      assert [{:a, %{}, value}] = Lexer.merge(tokens)
+      assert IO.iodata_to_binary(value) == "abcd"
+    end
+
+    test "merging preserves the unlexed string" do
+      tokens = [{:a, %{}, ["a", "b"]}, {:a, %{}, ["c", ["d"]]}, {:b, %{}, "e"}]
+
+      assert tokens |> Lexer.merge() |> Lexer.unlex() == "abcde"
+    end
+  end
+
   describe "split into lines" do
     test "after splitting, token values contain no newline characters" do
       check all tokens <- Gen.tokens() do
