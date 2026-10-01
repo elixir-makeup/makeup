@@ -74,6 +74,17 @@ defmodule MakeupTest.Lexer.HTMLFormatterTest do
     end
   end
 
+  test "a binary value is escaped, preserving safe characters and utf8" do
+    value = "a < b & \"c\" é 日"
+
+    assert HTMLFormatter.format_as_binary([{:string, %{}, value}]) ==
+             ~S[<pre class="highlight"><code>] <>
+             ~S[<span class="s">] <>
+             ~S[a &lt; b &amp; &quot;c&quot; é 日] <>
+             ~S[</span>] <>
+             ~S[</code></pre>]
+  end
+
   test "group ids are encoded before being written to data attributes" do
     html =
       HTMLFormatter.format_as_binary([

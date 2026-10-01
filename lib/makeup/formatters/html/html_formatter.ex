@@ -53,9 +53,28 @@ defmodule Makeup.Formatters.HTML.HTMLFormatter do
   defp escape_for(c) when is_integer(c) and c >= 128, do: << c :: utf8 >>
 
   defp escape_for(string) when is_binary(string) do
-    string
-    |> to_charlist()
-    |> Enum.map(&escape_for/1)
+    escape_binary(string, string, 0, 0, [])
+  end
+
+  for {char, replacement} <- [
+        {?&, "&amp;"},
+        {?<, "&lt;"},
+        {?>, "&gt;"},
+        {?", "&quot;"},
+        {?', "&#39;"}
+      ] do
+    defp escape_binary(<<unquote(char), rest::binary>>, original, skip, len, acc) do
+      part = binary_part(original, skip, len)
+      escape_binary(rest, original, skip + len + 1, 0, [acc, part, unquote(replacement)])
+    end
+  end
+
+  defp escape_binary(<<_char, rest::binary>>, original, skip, len, acc) do
+    escape_binary(rest, original, skip, len + 1, acc)
+  end
+
+  defp escape_binary(<<>>, original, skip, len, acc) do
+    [acc | binary_part(original, skip, len)]
   end
 
   defp escape(iodata) when is_list(iodata) do
