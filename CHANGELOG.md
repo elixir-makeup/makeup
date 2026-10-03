@@ -1,5 +1,13 @@
 # Changelog
 
+### 1.2.3 - 2026-10-03
+
+Make compilation deterministic by avoiding map ordering.
+
+Support iodata token values in Lexer.merge/1.
+
+Improve token escaping performance.
+
 ### 1.2.2 - 2026-07-01
 
 Escape group ids when generating HTML.
